@@ -10,4 +10,4 @@ export const ccValues = Array(128).fill(0.5)
 export const _cc = index => ccValues[index]
 
 /** @param {number} index */
-export const cc = index => chainable(_cc, [index], { scale, range })
+export const cc = index => chainable(() => _cc(index), { scale, range })
