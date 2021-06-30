@@ -1,7 +1,8 @@
-import { transformValue } from './utils'
+import { chainable } from './utils'
+import { scale, range } from './transforms'
 
 export const ccValues = Array(128).fill(0.5)
 
-export const _cc = (index, options) => transformValue(ccValues[index], options)
+export const _cc = index => ccValues[index]
 
-export const cc = (index, options) => () => _cc(index, options)
+export const cc = index => chainable(_cc, [index], { scale, range })

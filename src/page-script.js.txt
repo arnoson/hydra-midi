@@ -1,3 +1,11 @@
+const chainable = (fn, args, methods) => {
+  const result = () => fn(...args);
+  Object.entries(methods).forEach(
+    ([name, factory]) => (result[name] = factory(result))
+  );
+  return result
+};
+
 // @ts-check
 
 /**
@@ -74,26 +82,27 @@ const parseMidi = message => {
   return { type, channel, data: [data1, data2] }
 };
 
-const transformValue = (value, options = {}) => {
-  const min = options.min ?? 0;
-  const max = options.max ?? options.scale ?? 1;
-  return map(value, 0, 1, min, max)
-};
+const scale = value => factor => () => value() * factor;
+
+const range = value => (min = 0, max = 1) => () =>
+  map(value(), 0, 1, min, max);
 
 const ccValues = Array(128).fill(0.5);
 
-const _cc = (index, options) => transformValue(ccValues[index], options);
+const _cc = index => ccValues[index];
 
-const cc = (index, options) => () => _cc(index, options);
+const cc = index => chainable(_cc, [index], { scale, range });
 
 // @ts-check
 
 const noteValues = {};
 
-const _note = (note, options) =>
-  transformValue(noteValues[getNoteNumber(note)] ? 1 : 0, options);
+const _note = note => (noteValues[getNoteNumber(note)] ? 1 : 0);
 
-const note = (note, options) => () => _note(note, options);
+const note = note => {
+  const number = getNoteNumber(note);
+  return chainable(_note, [number], { scale, range })
+};
 
 const access = await navigator.requestMIDIAccess();
 for (const input of access.inputs.values()) {
