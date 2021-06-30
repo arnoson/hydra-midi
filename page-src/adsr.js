@@ -1,5 +1,7 @@
-import { getNoteNumber } from './utils/getNoteNumber'
-import { map } from './utils/map'
+// @ts-check
+
+import { linearRamp, chainable } from './utils'
+import { scale, range } from './transforms'
 
 class Envelope {
   constructor({ a, d, s, r }) {
@@ -17,6 +19,10 @@ class Envelope {
     this.startTime = null
   }
 
+  /**
+   * @param {number} time
+   * @returns {number}
+   */
   value(time) {
     this.startTime ??= time
     const elapsedTime = time - this.startTime
@@ -30,13 +36,13 @@ class Envelope {
       // Decay (only if there is sustain)
       const factor = (elapsedTime - a) / d
       return linearRamp(factor, 1, s)
-    } else if (noteOn && s > 0) {
+    } else if (this.noteOn && s > 0) {
       // Sustain (if the note is still on and there is sustain)
       return s
     } else {
       // Release
       this.gateDuration ??= elapsedTime
-      const factor = Math.min(1, (elapsedTime - gateDuration) / r)
+      const factor = Math.min(1, (elapsedTime - this.gateDuration) / r)
       // If there was no sustain, there also was no decay so we can start the
       // release at 1.0
       const from = s || 1
@@ -47,12 +53,15 @@ class Envelope {
 
 const envelopes = {}
 
-export const adsr = (note, a, d, s, r, options) => {
-  const envelope = new Envelope({ a, d, s, r })
-  envelopes[getNoteNumber(note)] = envelope
+/**
+ * Adsr is chainable to `note()`. It creates an envelope and returns a chainable
+ * function that returns the envelope value at a given time.
+ * @param {*} note
+ * @returns
+ */
+export const adsr = note => fn => (a = 100, d = 100, s = 1, r = 100) => {
+  envelopes[note] ??= new Envelope({ a, d, s, r })
+  const envelope = envelopes[note]
 
-  const min = options.min ?? 0
-  const max = options.max ?? options.scale ?? 1
-
-  return time => map(envelope.value(time), 0, 1, min, max)
+  return chainable(({ time }) => envelope.value(time * 1000), { scale, range })
 }

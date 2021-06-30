@@ -4,6 +4,7 @@ import { cc, _cc, ccValues } from './cc'
 import { note, _note, noteValues } from './note'
 
 const access = await navigator.requestMIDIAccess()
+
 for (const input of access.inputs.values()) {
   input.onmidimessage = message => {
     const { type, data, channel } = parseMidi(message)
@@ -16,5 +17,8 @@ for (const input of access.inputs.values()) {
     }
   }
 }
+
+// Hydra's logging is quite verbose.
+// setTimeout(console.clear, 2000)
 
 exposeToWindow({ cc, _cc, note, _note })
