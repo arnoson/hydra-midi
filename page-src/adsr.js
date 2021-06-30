@@ -20,6 +20,7 @@ class Envelope {
 
   trigger() {
     this.startTime = null
+    this.gateDuration = null
     this.noteOn = true
     this.active = true
   }
