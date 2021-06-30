@@ -4,7 +4,7 @@
  * Get the note number for the specified note name.
  * @example getNoteNumber('C3') // -> 60 (Note: uses C3 as middle C!)
  * @param {string|number} note
- * @returns
+ * @returns {number}
  */
 export const getNoteNumber = note => {
   if (typeof note === 'number') return note
