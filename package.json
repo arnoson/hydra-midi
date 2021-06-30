@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "cleanup": "shx rm -rf ./dist",
+    "build": "npm run cleanup && rollup -c",
+    "dev": "rollup -c -w"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@tonaljs/tonal": "^4.6.0",
+    "rollup": "^2.52.3",
+    "rollup-plugin-chrome-extension": "^3.5.7",
+    "rollup-plugin-string": "^3.0.0",
+    "shx": "^0.3.3",
+    "web-ext": "^6.2.0"
+  }
+}

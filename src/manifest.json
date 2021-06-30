@@ -1,0 +1,13 @@
+{
+  "name": "Hydra Midi",
+  "description": "Use midi inputs in hydra.ojack.xyz",
+  "version": "1.0",
+  "manifest_version": 2,
+  "content_scripts": [
+    {
+      "matches": ["https://hydra.ojack.xyz/*"],
+      "js": ["content-script.js"],
+      "css": []
+    }
+  ]
+}
