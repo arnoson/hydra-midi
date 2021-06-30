@@ -4,10 +4,10 @@
  * Get the note number for the specified note name.
  * @example getNoteNumber('C3') // -> 60 (Note: uses C3 as middle C!)
  * @param {string|number} note
- * @returns {number}
+ * @returns {number|null}
  */
 export const getNoteNumber = note => {
-  if (typeof note === 'number') return note
+  if (typeof note !== 'string') return note
 
   const name = note.slice(0, -1).toLowerCase()
   const octave = parseInt(note.slice(-1))

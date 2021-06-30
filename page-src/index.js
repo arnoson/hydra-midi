@@ -6,18 +6,20 @@ import { envelopes } from './adsr'
 import { cc, _cc, ccValues } from './cc'
 import { note, _note, noteValues } from './note'
 
+exposeToWindow({ cc, _cc, note, _note })
+
 const handleControlChange = (index, value) => {
   // Normalize values.
   ccValues[index] = (value + 1) / 128
 }
 
 const handleNoteOn = note => {
-  noteValues[note] = true
+  noteValues.add(note)
   envelopes[note]?.trigger()
 }
 
 const handleNoteOff = note => {
-  delete noteValues[note]
+  noteValues.delete(note)
   envelopes[note]?.stop()
 }
 
@@ -37,5 +39,3 @@ for (const input of access.inputs.values()) {
 
 // Hydra's logging is quite verbose.
 // setTimeout(console.clear, 2000)
-
-exposeToWindow({ cc, _cc, note, _note })
