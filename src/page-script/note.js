@@ -18,7 +18,7 @@ export const _note = (note, channel, device) =>
  * @param {string} device
  */
 export const note = (note, channel, device) => {
-  note = getNoteNumber(note)
+  note = note === '*' ? note : getNoteNumber(note)
   const id = getMidiId(note, channel, device)
   // Use this function instead of `_note()` so we don't have resolve the note
   // number each time.

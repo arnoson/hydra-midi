@@ -10,11 +10,11 @@ import { getMidiId } from './getMidiId'
  * @returns
  */
 export const getMidiWildcards = (value, channel, device) => [
-  getMidiId(null, null, null),
-  getMidiId(value, null, null),
-  getMidiId(null, channel, null),
-  getMidiId(null, null, device),
-  getMidiId(value, channel, null),
-  getMidiId(null, channel, device),
-  getMidiId(value, null, device)
+  getMidiId('*', '*', '*'),
+  getMidiId(value, '*', '*'),
+  getMidiId('*', channel, '*'),
+  getMidiId('*', '*', device),
+  getMidiId(value, channel, '*'),
+  getMidiId('*', channel, device),
+  getMidiId(value, '*', device)
 ]

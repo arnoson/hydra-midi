@@ -7,9 +7,9 @@
  * '60/0/*' -> Note 60 on channel 0 on any device
  * '74/1/input-0' -> CC 74 on channel 1 on input device with id `input-0`
  * @param {number|string} value
- * @param {number} channel
- * @param {string} device
+ * @param {number|string} channel
+ * @param {number|string} device
  * @returns
  */
-export const getMidiId = (value, channel, device) =>
-  `${value ?? '*'}/${channel ?? '*'}/${device ?? '*'}`
+export const getMidiId = (value, channel = 0, device = 0) =>
+  `${value}/${channel}/${device}`

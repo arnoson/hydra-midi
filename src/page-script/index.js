@@ -53,10 +53,13 @@ const messageHandlers = {
 }
 
 const access = await navigator.requestMIDIAccess()
+
+let i = 0
 for (const input of access.inputs.values()) {
+  const index = i++
   input.onmidimessage = message => {
     const { type, data, channel } = parseMidi(message)
-    messageHandlers[type]?.(...data, channel, input.id)
+    messageHandlers[type]?.(...data, channel, index)
   }
 }
 
