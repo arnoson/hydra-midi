@@ -4,8 +4,8 @@ import {
   parseMidi,
   midiTypes,
   exposeToWindow,
-  getNoteId,
-  getNoteWildcards
+  getMidiId,
+  getMidiWildcards
 } from '../utils'
 import { envelopes } from './adsr'
 
@@ -20,24 +20,22 @@ const handleControlChange = (index, value) => {
 }
 
 const handleNoteOn = (note, _velocity, channel, device) => {
-  const id = getNoteId(note, channel, device)
+  const id = getMidiId(note, channel, device)
   playingNotes.add(id)
   envelopes[id]?.trigger()
 
-  getNoteWildcards(note, channel, device).forEach(wildcard => {
+  getMidiWildcards(note, channel, device).forEach(wildcard => {
     playingNotes.add(wildcard)
     envelopes[wildcard]?.trigger()
   })
-
-  console.log(envelopes)
 }
 
 const handleNoteOff = (note, _velocity, channel, device) => {
-  const id = getNoteId(note, channel, device)
+  const id = getMidiId(note, channel, device)
   playingNotes.delete(id)
   envelopes[note]?.stop()
 
-  getNoteWildcards(note, channel, device).forEach(wildcard => {
+  getMidiWildcards(note, channel, device).forEach(wildcard => {
     playingNotes.delete(wildcard)
     envelopes[wildcard]?.stop()
   })
