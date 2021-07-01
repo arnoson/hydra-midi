@@ -5,10 +5,10 @@ import { string } from 'rollup-plugin-string'
 
 export default defineConfig([
   {
-    input: 'page-src/index.js',
+    input: 'src/page-script/page-script.js',
     output: {
       format: 'esm',
-      file: 'src/page-script.js.txt'
+      file: 'src/page-script-bundle.js.txt'
     },
     plugins: [nodeResolve()]
   },

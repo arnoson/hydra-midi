@@ -1,4 +1,4 @@
-import pageScript from './page-script.js.txt'
+import pageScript from './page-script-bundle.js.txt'
 
 const script = document.createElement('script')
 script.text = pageScript
