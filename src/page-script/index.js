@@ -7,12 +7,12 @@ import {
   getMidiId,
   getMidiWildcards
 } from '../utils'
+import { midi } from './midi'
 import { envelopes } from './adsr'
-
 import { cc, _cc, ccValues } from './cc'
 import { note, _note, playingNotes } from './note'
 
-exposeToWindow({ cc, _cc, note, _note })
+exposeToWindow({ midi, cc, _cc, note, _note })
 
 const handleControlChange = (index, value, channel, device) => {
   const ccId = getMidiId(index, channel, device)
