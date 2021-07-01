@@ -1,13 +1,19 @@
 // @ts-check
 
-import { chainable } from '../utils'
+import { chainable, getMidiId } from '../utils'
 import { scale, range } from './transforms'
 
-/** @type {number[]} */
-export const ccValues = Array(128).fill(0.5)
+/** @type {Record<string, number>} */
+export const ccValues = {}
 
-/** @param {number} index */
-export const _cc = index => ccValues[index]
+export const _cc = (index, channel, device) =>
+  ccValues[getMidiId(index, channel, device)] ?? 0
 
-/** @param {number} index */
-export const cc = index => chainable(() => _cc(index), { scale, range })
+/**
+ * @param {number} index
+ * @param {number} channel
+ * @param {string} device
+ * @returns
+ */
+export const cc = (index, channel, device) =>
+  chainable(() => _cc(index, channel, device), { scale, range })

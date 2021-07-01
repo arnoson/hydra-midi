@@ -14,15 +14,20 @@ import { note, _note, playingNotes } from './note'
 
 exposeToWindow({ cc, _cc, note, _note })
 
-const handleControlChange = (index, value) => {
-  // Normalize values.
-  ccValues[index] = (value + 1) / 128
+const handleControlChange = (index, value, channel, device) => {
+  const ccId = getMidiId(index, channel, device)
+  const normalizedValue = value / 127
+
+  ccValues[ccId] = normalizedValue
+  getMidiWildcards(index, channel, device).forEach(
+    wildcard => (ccValues[wildcard] = normalizedValue)
+  )
 }
 
 const handleNoteOn = (note, _velocity, channel, device) => {
-  const id = getMidiId(note, channel, device)
-  playingNotes.add(id)
-  envelopes[id]?.trigger()
+  const noteId = getMidiId(note, channel, device)
+  playingNotes.add(noteId)
+  envelopes[noteId]?.trigger()
 
   getMidiWildcards(note, channel, device).forEach(wildcard => {
     playingNotes.add(wildcard)
@@ -31,9 +36,9 @@ const handleNoteOn = (note, _velocity, channel, device) => {
 }
 
 const handleNoteOff = (note, _velocity, channel, device) => {
-  const id = getMidiId(note, channel, device)
-  playingNotes.delete(id)
-  envelopes[note]?.stop()
+  const noteId = getMidiId(note, channel, device)
+  playingNotes.delete(noteId)
+  envelopes[noteId]?.stop()
 
   getMidiWildcards(note, channel, device).forEach(wildcard => {
     playingNotes.delete(wildcard)
