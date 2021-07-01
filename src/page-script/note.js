@@ -7,14 +7,16 @@ import { getMidiId } from '../utils/getMidiId'
 
 export const playingNotes = new Set()
 
-/** @param {string} noteId */
 const noteIsPlaying = noteId => playingNotes.has(noteId)
 
-/** @param {string|number} note */
 export const _note = (note, channel, device) =>
   noteIsPlaying[getMidiId(getNoteNumber(note), channel, device)] ? 1 : 0
 
-/** @param {string|number|null} note */
+/**
+ * @param {string|number|null} note
+ * @param {number} channel
+ * @param {string} device
+ */
 export const note = (note, channel, device) => {
   note = getNoteNumber(note)
   const id = getMidiId(note, channel, device)
