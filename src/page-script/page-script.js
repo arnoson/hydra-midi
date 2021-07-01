@@ -1,10 +1,16 @@
 // @ts-check
 
-import { parseMidi, midiTypes, exposeToWindow } from '../utils'
+import {
+  parseMidi,
+  midiTypes,
+  exposeToWindow,
+  getNoteId,
+  getNoteWildcards
+} from '../utils'
 import { envelopes } from './adsr'
 
 import { cc, _cc, ccValues } from './cc'
-import { note, _note, noteValues } from './note'
+import { note, _note, playingNotes } from './note'
 
 exposeToWindow({ cc, _cc, note, _note })
 
@@ -13,16 +19,28 @@ const handleControlChange = (index, value) => {
   ccValues[index] = (value + 1) / 128
 }
 
-const handleNoteOn = note => {
-  noteValues.add(note)
-  envelopes[note]?.trigger()
-  envelopes['all']?.trigger()
+const handleNoteOn = (note, _velocity, channel, device) => {
+  const id = getNoteId(note, channel, device)
+  playingNotes.add(id)
+  envelopes[id]?.trigger()
+
+  getNoteWildcards(note, channel, device).forEach(wildcard => {
+    playingNotes.add(wildcard)
+    envelopes[wildcard]?.trigger()
+  })
+
+  console.log(envelopes)
 }
 
-const handleNoteOff = note => {
-  noteValues.delete(note)
+const handleNoteOff = (note, _velocity, channel, device) => {
+  const id = getNoteId(note, channel, device)
+  playingNotes.delete(id)
   envelopes[note]?.stop()
-  envelopes['all']?.stop()
+
+  getNoteWildcards(note, channel, device).forEach(wildcard => {
+    playingNotes.delete(wildcard)
+    envelopes[wildcard]?.stop()
+  })
 }
 
 const messageHandlers = {
@@ -34,8 +52,8 @@ const messageHandlers = {
 const access = await navigator.requestMIDIAccess()
 for (const input of access.inputs.values()) {
   input.onmidimessage = message => {
-    const { type, data } = parseMidi(message)
-    messageHandlers[type]?.(...data)
+    const { type, data, channel } = parseMidi(message)
+    messageHandlers[type]?.(...data, channel, input.id)
   }
 }
 
