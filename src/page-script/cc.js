@@ -1,6 +1,7 @@
 // @ts-check
 
-import { chainable, getMidiId } from '../utils'
+import { chainable } from '../utils'
+import { getMidiId } from './midi'
 import { scale, range } from './transforms'
 
 /** @type {Record<string, number>} */

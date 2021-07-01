@@ -1,7 +1,5 @@
 export * from './chainable'
 export * from './exposeToWindow'
-export * from './getMidiId'
-export * from './getMidiWildcards'
 export * from './getNoteNumber'
 export * from './linearRamp'
 export * from './map'
