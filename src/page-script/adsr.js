@@ -1,7 +1,7 @@
 // @ts-check
 
 import { Envelope } from './Envelope'
-import { chainable } from './utils'
+import { chainable } from '../utils'
 import { scale, range } from './transforms'
 
 export const envelopes = {}

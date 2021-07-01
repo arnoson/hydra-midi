@@ -1,6 +1,6 @@
 // @ts-check
 
-import { chainable } from './utils'
+import { chainable } from '../utils'
 import { scale, range } from './transforms'
 
 /** @type {number[]} */

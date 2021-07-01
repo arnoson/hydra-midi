@@ -1,4 +1,4 @@
-import { map } from './utils'
+import { map } from '../utils'
 
 export const scale = fn => factor => (...args) => fn(...args) * factor
 

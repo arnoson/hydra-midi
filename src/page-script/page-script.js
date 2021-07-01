@@ -1,6 +1,6 @@
 // @ts-check
 
-import { parseMidi, midiTypes, exposeToWindow } from './utils'
+import { parseMidi, midiTypes, exposeToWindow } from '../utils'
 import { envelopes } from './adsr'
 
 import { cc, _cc, ccValues } from './cc'

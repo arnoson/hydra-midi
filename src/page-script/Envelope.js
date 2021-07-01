@@ -1,6 +1,6 @@
 // @ts-check
 
-import { linearRamp } from './utils'
+import { linearRamp } from '../utils'
 
 export class Envelope {
   active = false

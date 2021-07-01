@@ -1,6 +1,6 @@
 // @ts-check
 
-import { chainable, getNoteNumber } from './utils'
+import { chainable, getNoteNumber } from '../utils'
 import { scale, range } from './transforms'
 import { adsr } from './adsr'
 
