@@ -1,9 +1,9 @@
 // @ts-check
 
 import { chainable, getNoteNumber } from '../utils'
-import { scale, range } from './transforms'
-import { adsr } from './adsr'
-import { getMidiId } from './midi'
+import { scale, range } from '../transforms'
+import { adsr } from '../transforms/adsr'
+import { getMidiId } from '../midi'
 
 export const playingNotes = new Set()
 

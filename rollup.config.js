@@ -5,7 +5,7 @@ import { string } from 'rollup-plugin-string'
 
 export default defineConfig([
   {
-    input: 'src/page-script/index.js',
+    input: 'src/page-script.js',
     output: {
       format: 'esm',
       file: 'src/page-script-bundle.js.txt'
