@@ -9,7 +9,7 @@ export const envelopes = {}
 /**
  * Adsr is chainable to `note()`. It creates an envelope and returns a chainable
  * function that returns the envelope value at a given time.
- * @param {number} note
+ * @param {number|string} note
  * @returns
  */
 export const adsr = note => fn => (a = 100, d = 100, s = 1, r = 100) => {

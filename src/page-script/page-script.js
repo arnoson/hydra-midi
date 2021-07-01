@@ -16,11 +16,13 @@ const handleControlChange = (index, value) => {
 const handleNoteOn = note => {
   noteValues.add(note)
   envelopes[note]?.trigger()
+  envelopes['all']?.trigger()
 }
 
 const handleNoteOff = note => {
   noteValues.delete(note)
   envelopes[note]?.stop()
+  envelopes['all']?.stop()
 }
 
 const messageHandlers = {
