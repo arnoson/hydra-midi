@@ -5,7 +5,7 @@ import { SimpleEventEmitter } from './SimpleEventEmitter'
 /**
  * A thin wrapper around Web Midi.
  */
-export class Midi extends SimpleEventEmitter {
+export class MidiAccess extends SimpleEventEmitter {
   static TypeNoteOff = 0x80
   static TypeNoteOn = 0x90
   static TypeAfterTouchPoly = 0xa0
@@ -87,7 +87,7 @@ export class Midi extends SimpleEventEmitter {
 
   handleMessage(message) {
     if (this.enabled) {
-      const { type, data, channel } = Midi.parseMessage(message)
+      const { type, data, channel } = MidiAccess.parseMessage(message)
       this.emit(type, { data, channel, input: message.target })
     }
   }

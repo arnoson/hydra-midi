@@ -1,11 +1,11 @@
 // @ts-check
 
-import { ccValues } from './hydra-functions/cc'
-import { playingNotes } from './hydra-functions/note'
+import { ccValues } from './hydra-api/cc'
+import { playingNotes } from './hydra-api/note'
 import { envelopes } from './transforms/adsr'
-import { Midi } from './lib/Midi'
+import { MidiAccess } from './lib/MidiAccess'
 
-export const midi = new Midi()
+export const midiAccess = new MidiAccess()
 
 /**
  * @param {number|string} value
@@ -15,7 +15,7 @@ export const midi = new Midi()
  */
 export const getMidiId = (value, channel = 0, input) => {
   if (input !== undefined) {
-    return `${value}/${channel}/${input ?? midi.getInputId(0)}`
+    return `${value}/${channel}/${input ?? midiAccess.getInputId(0)}`
   }
 }
 
@@ -35,7 +35,7 @@ export const getMidiWildcards = (value, channel, input) => [
   getMidiId(value, '*', input)
 ]
 
-midi.on(Midi.TypeControlChange, ({ data, channel, input }) => {
+midiAccess.on(MidiAccess.TypeControlChange, ({ data, channel, input }) => {
   const [index, value] = data
   const ccId = getMidiId(index, channel, input.id)
   const normalizedValue = value / 127
@@ -46,7 +46,7 @@ midi.on(Midi.TypeControlChange, ({ data, channel, input }) => {
   )
 })
 
-midi.on(Midi.TypeNoteOn, ({ data, channel, input }) => {
+midiAccess.on(MidiAccess.TypeNoteOn, ({ data, channel, input }) => {
   const [note] = data
   const noteId = getMidiId(note, channel, input.id)
   playingNotes.add(noteId)
@@ -58,7 +58,7 @@ midi.on(Midi.TypeNoteOn, ({ data, channel, input }) => {
   })
 })
 
-midi.on(Midi.TypeNoteOff, ({ data, channel, input }) => {
+midiAccess.on(MidiAccess.TypeNoteOff, ({ data, channel, input }) => {
   const [note] = data
   const noteId = getMidiId(note, channel, input.id)
   playingNotes.delete(noteId)

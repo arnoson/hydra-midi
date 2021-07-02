@@ -1,14 +1,14 @@
 // @ts-check
 
 import { chainable } from '../utils'
-import { getMidiId, midi } from '../midi'
+import { getMidiId, midiAccess } from '../midiAccess'
 import { scale, range } from '../transforms'
 
 /** @type {Record<string, number>} */
 export const ccValues = {}
 
 export const _cc = (index, channel, input = 0) =>
-  ccValues[getMidiId(index, channel, midi.getInputId(input))] ?? 0
+  ccValues[getMidiId(index, channel, midiAccess.getInputId(input))] ?? 0
 
 /**
  * @param {number} index
@@ -17,7 +17,7 @@ export const _cc = (index, channel, input = 0) =>
  * @returns
  */
 export const cc = (index, channel, input = 0) => {
-  const ccId = getMidiId(index, channel, midi.getInputId(input))
+  const ccId = getMidiId(index, channel, midiAccess.getInputId(input))
   const fn = () => ccValues[ccId] ?? 0
   return chainable(fn, { scale, range })
 }

@@ -1,4 +1,5 @@
 export * from './adsr'
+export * from './channel'
 export * from './input'
 export * from './range'
 export * from './scale'
