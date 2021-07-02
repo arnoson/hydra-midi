@@ -4,6 +4,7 @@ import { Envelope } from '../lib/Envelope'
 import { chainable } from '../utils'
 import { scale } from './scale'
 import { range } from './range'
+import state from '../state'
 
 export const envelopes = {}
 
@@ -13,7 +14,12 @@ export const envelopes = {}
  * @param {string} noteId
  * @returns
  */
-export const adsr = noteId => () => (a = 100, d = 100, s = 1, r = 100) => {
+export const adsr = noteId => () => (a, d, s, r) => {
+  // Perform a deep merge with the adsr defaults.
+  ;[a, d, s, r] = [a, d, s, r].map(
+    (arg, i) => arg ?? state.defaults.adsr[i] ?? state.initialDefaults.adsr[i]
+  )
+
   envelopes[noteId] = new Envelope({ a, d, s, r })
   const envelope = envelopes[noteId]
 

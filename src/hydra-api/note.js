@@ -1,15 +1,19 @@
 // @ts-check
 
 import { chainable } from '../utils'
-import { playingNotes } from '../state'
+import state from '../state'
 import { scale, range } from '../transforms'
 import { adsr } from '../transforms/adsr'
-import { getMidiId, midiAccess, resolveNote, resolveInput } from '../midiAccess'
+import { getMidiId, resolveNote, resolveInput } from '../midiAccess'
 
-const noteIsPlaying = noteId => playingNotes.has(noteId)
+const noteIsPlaying = noteId => state.playingNotes.has(noteId)
 
 const getNoteId = (note, channel, input) =>
-  getMidiId(resolveNote(note), channel, resolveInput(input))
+  getMidiId(
+    resolveNote(note),
+    channel ?? state.defaults.channel,
+    resolveInput(input ?? state.defaults.input)
+  )
 
 /**
  * returns 1 if the specified note is playing, and 0 otherwise. This is useful
@@ -20,7 +24,7 @@ const getNoteId = (note, channel, input) =>
  * @param {number|string} input
  * @returns
  */
-export const _note = (note, channel, input = 0) =>
+export const _note = (note, channel, input) =>
   noteIsPlaying(getNoteId(note, channel, input)) ? 1 : 0
 
 /**
@@ -32,8 +36,9 @@ export const _note = (note, channel, input = 0) =>
  * @param {number|string} channel
  * @param {number|string} input
  */
-export const note = (note, channel, input = 0) => {
+export const note = (note, channel, input) => {
   const noteId = getNoteId(note, channel, input)
+  console.log(noteId)
   const fn = () => (noteIsPlaying(noteId) ? 1 : 0)
   return chainable(fn, { scale, range, adsr: adsr(noteId) })
 }

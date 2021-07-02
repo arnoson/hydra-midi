@@ -1,8 +1,8 @@
 // @ts-check
 
 import { chainable } from '../utils'
-import { ccValues } from '../state'
-import { getMidiId, midiAccess, resolveInput } from '../midiAccess'
+import state from '../state'
+import { getMidiId, resolveInput } from '../midiAccess'
 import { scale, range, value } from '../transforms'
 
 const getCcId = (index, channel, input) =>
@@ -18,7 +18,7 @@ const getCcId = (index, channel, input) =>
  * @returns
  */
 export const _cc = (index, channel, input = 0) =>
-  ccValues[getCcId(index, channel, input)] ?? 0
+  state.ccValues[getCcId(index, channel, input)] ?? 0
 
 /**
  * Generate a chainable function that returns the value for the specified CC
@@ -32,6 +32,6 @@ export const _cc = (index, channel, input = 0) =>
  */
 export const cc = (index, channel, input = 0) => {
   const ccId = getCcId(index, channel, input)
-  const fn = () => ccValues[ccId] ?? 0
+  const fn = () => state.ccValues[ccId] ?? 0
   return chainable(fn, { scale, range, value })
 }

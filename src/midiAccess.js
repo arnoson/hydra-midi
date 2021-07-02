@@ -1,10 +1,14 @@
 // @ts-check
 
-import { ccValues, playingNotes } from './state'
+import state from './state'
 import { envelopes } from './transforms/adsr'
 import { MidiAccess } from './lib/MidiAccess'
 import { logMidiMessage, showInputs } from './gui'
 import { getNoteNumber } from './utils'
+
+// Those properties will never change, only their content, so it's save to
+// destructure.
+const { ccValues, playingNotes } = state
 
 // Expose the `MidiAccess` instance because we need it in other files too.
 export const midiAccess = new MidiAccess()
@@ -17,7 +21,7 @@ export const midiAccess = new MidiAccess()
  * @param {number|string} input
  * @returns
  */
-export const getMidiId = (value, channel = 0, input) => {
+export const getMidiId = (value, channel, input) => {
   if (input !== undefined) {
     return `${value}/${channel}/${input ?? midiAccess.getInputId(0)}`
   }
@@ -46,21 +50,6 @@ export const resolveInput = input =>
   input === '*' ? '*' : midiAccess.getInputId(input)
 
 export const resolveNote = note => (note === '*' ? note : getNoteNumber(note))
-
-/**
- * Start midi access.
- */
-export const start = async () => {
-  await midiAccess.start()
-  midiAccess.access.addEventListener('statechange', () => {
-    showInputs(midiAccess.access.inputs)
-  })
-}
-
-/**
- * Pause midi access.
- */
-export const pause = midiAccess.pause
 
 /**
  * For all received midi values we not only save the value for the exact midi id
