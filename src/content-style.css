@@ -11,6 +11,12 @@
   font-family: monospace;
   line-height: 1.2em;
   pointer-events: none;
+
+  --color-midi-on: orange;
+  --color-midi-off: orange;
+  --color-midi-cc: dodgerblue;
+  --color-midi-bnd: #00d86c;
+  --color-midi-aft: #e34040;
 }
 
 .hydra-midi-messages {
@@ -24,30 +30,9 @@
   margin-bottom: 3px;
 }
 
-.hydra-midi-message-on,
-.hydra-midi-message-off {
-  color: orange;
-}
-
-.hydra-midi-message-cc {
-  color: dodgerblue;
-}
-
-.hydra-midi-message-bnd {
-  color: #00d86c;
-}
-
-.hydra-midi-message-aft {
-  color: #e34040;
-}
-
 .hydra-midi-input {
   display: flex;
   white-space: pre;
-}
-
-.hydra-midi-input-unavailable {
-  color: dimgray;
 }
 
 .hydra-midi-input-name {

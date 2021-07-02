@@ -37,7 +37,9 @@ export const getMidiWildcards = (value, channel, input) => [
 
 export const start = async () => {
   await midiAccess.start()
-  showInputs(midiAccess.access.inputs)
+  midiAccess.access.addEventListener('statechange', () => {
+    showInputs(midiAccess.access.inputs)
+  })
 }
 
 export const pause = midiAccess.pause
@@ -52,7 +54,7 @@ midiAccess.on(MidiAccess.TypeControlChange, ({ data, channel, input }) => {
     wildcard => (ccValues[wildcard] = normalizedValue)
   )
 
-  logMidiMessage({ type: 'cc', channel, data })
+  logMidiMessage({ input, type: 'cc', channel, data })
 })
 
 midiAccess.on(MidiAccess.TypeNoteOn, ({ data, channel, input }) => {
@@ -66,7 +68,7 @@ midiAccess.on(MidiAccess.TypeNoteOn, ({ data, channel, input }) => {
     envelopes[wildcard]?.trigger()
   })
 
-  logMidiMessage({ type: 'on', channel, data })
+  logMidiMessage({ input, type: 'on', channel, data })
 })
 
 midiAccess.on(MidiAccess.TypeNoteOff, ({ data, channel, input }) => {
@@ -80,19 +82,19 @@ midiAccess.on(MidiAccess.TypeNoteOff, ({ data, channel, input }) => {
     envelopes[wildcard]?.stop()
   })
 
-  logMidiMessage({ type: 'off', channel, data })
+  logMidiMessage({ input, type: 'off', channel, data })
 })
 
-midiAccess.on(MidiAccess.TypePitchBend, ({ data, channel }) => {
+midiAccess.on(MidiAccess.TypePitchBend, ({ input, data, channel }) => {
   const value = ((data[1] << 7) + data[0] - 8192) / 8192
   const displayValue = +value.toFixed(2)
-  logMidiMessage({ type: 'bnd', channel, data: [displayValue] })
+  logMidiMessage({ input, type: 'bnd', channel, data: [displayValue] })
 })
 
-midiAccess.on(MidiAccess.TypeAfterTouchChannel, ({ data, channel }) => {
-  logMidiMessage({ type: 'aft', channel, data })
+midiAccess.on(MidiAccess.TypeAfterTouchChannel, ({ input, data, channel }) => {
+  logMidiMessage({ input, type: 'aft', channel, data })
 })
 
-midiAccess.on(MidiAccess.TypeAfterTouchPoly, ({ data, channel }) => {
-  logMidiMessage({ type: 'aft', channel, data })
+midiAccess.on(MidiAccess.TypeAfterTouchPoly, ({ input, data, channel }) => {
+  logMidiMessage({ input, type: 'aft', channel, data })
 })

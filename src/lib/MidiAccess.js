@@ -45,12 +45,18 @@ export class MidiAccess extends SimpleEventEmitter {
 
   async setup() {
     this.access = await navigator.requestMIDIAccess()
+
     for (const input of this.access.inputs.values()) {
-      input.addEventListener('midimessage', this.handleMessage.bind(this))
+      input.open()
     }
+    const handleMessage = this.handleMessage.bind(this)
 
-    this.access.addEventListener('statechange', console.log)
-
+    this.access.addEventListener('statechange', ({ port }) => {
+      if (port.state === 'connected') {
+        const input = this.access.inputs.get(port.id)
+        input?.addEventListener('midimessage', handleMessage)
+      }
+    })
     this.isSetup = true
   }
 
