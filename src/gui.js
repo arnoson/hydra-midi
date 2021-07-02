@@ -9,8 +9,10 @@ let messages
 
 const maxMessages = 10
 const messageStack = Array(maxMessages)
+let isSetup = false
+let isEnabled = false
 
-export const initGui = () => {
+const setup = () => {
   gui = document.createElement('div')
   gui.classList.add('hydra-midi-gui')
   gui.innerHTML = `
@@ -23,9 +25,29 @@ export const initGui = () => {
   document.body.append(gui)
   inputs = gui.querySelector('.hydra-midi-inputs')
   messages = gui.querySelector('.hydra-midi-messages')
+
+  isSetup = true
+  isEnabled = true
 }
 
+export const show = () => {
+  if (!isSetup) setup()
+  gui.hidden = false
+  isEnabled = true
+}
+
+export const hide = () => {
+  gui.hidden = true
+  isEnabled = false
+}
+
+/**
+ * Render a list of all open midi inputs.
+ * @param {WebMidi.MIDIInputMap} list
+ */
 export const showInputs = list => {
+  if (!isEnabled) return
+
   const getInputName = input => input.name ?? input.id ?? 'n/a'
   const template = (input, index) =>
     `<div class="hydra-midi-input" style="color: var(--color-${input.id})">` +
@@ -36,7 +58,18 @@ export const showInputs = list => {
   inputs.innerHTML = [...list.values()].map(template).join('')
 }
 
+/**
+ * Log a midi message and highlight the corresponding input.
+ * @param {{
+ *  input: WebMidi.MIDIInput,
+ *  channel: number,
+ *  type: string,
+ *  data: number[]
+ * }} message
+ */
 export const logMidiMessage = message => {
+  if (!isEnabled) return
+
   const pad = (value, length = 3) => String(value).padEnd(length, ' ')
 
   const { input } = message
@@ -54,6 +87,12 @@ export const logMidiMessage = message => {
 }
 
 const highlightTimeouts = {}
+/**
+ * Let the input flash for a short moment in the color of the received midi
+ * message.
+ * @param {*} input
+ * @param {*} type
+ */
 const highlightInput = (input, type) => {
   clearTimeout(highlightTimeouts[input.id])
 
