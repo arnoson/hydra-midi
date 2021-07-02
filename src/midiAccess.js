@@ -4,10 +4,14 @@ import { ccValues, playingNotes } from './state'
 import { envelopes } from './transforms/adsr'
 import { MidiAccess } from './lib/MidiAccess'
 import { logMidiMessage, showInputs } from './gui'
+import { getNoteNumber } from './utils'
 
+// Expose the `MidiAccess` instance because we need it in other files too.
 export const midiAccess = new MidiAccess()
 
 /**
+ * Get an id for a midi message using an osc style address.
+ * @example getMidiId(60, 0, 1) // -> '60/0/1'
  * @param {number|string} value
  * @param {number|string} channel
  * @param {number|string} input
@@ -20,6 +24,9 @@ export const getMidiId = (value, channel = 0, input) => {
 }
 
 /**
+ * Get all possible wildcard combinations for a midi id ({@link getMidiId}).
+ * If we have an id for a midi note like this: '60/0/1' we could use the
+ * wildcard '60/0/*' (Note 60 on channel 0 on any input).
  * @param {number} value
  * @param {number} channel
  * @param {string} input
@@ -35,6 +42,14 @@ export const getMidiWildcards = (value, channel, input) => [
   getMidiId(value, '*', input)
 ]
 
+export const resolveInput = input =>
+  input === '*' ? '*' : midiAccess.getInputId(input)
+
+export const resolveNote = note => (note === '*' ? note : getNoteNumber(note))
+
+/**
+ * Start midi access.
+ */
 export const start = async () => {
   await midiAccess.start()
   midiAccess.access.addEventListener('statechange', () => {
@@ -42,7 +57,23 @@ export const start = async () => {
   })
 }
 
+/**
+ * Pause midi access.
+ */
 export const pause = midiAccess.pause
+
+/**
+ * For all received midi values we not only save the value for the exact midi id
+ * (e.g.: ccValues['74/0/input-0'] = 127) but also all possible wildcards.
+ * So for CC 74 this would be:
+ * 74 / * / * (CC 74 on any channel and any input)
+ * 74 / * / input-0 (CC 74 on any channel on input-0 )
+ * ... and so on
+ * This might seem a little verbose but this way we can easily poll for values
+ * without having to do any additional logic.
+ * Listening to CC 74 on channel 0 on any input in hydra: `cc(74, 0, '*')` will
+ * internally just look up `ccValues['74/0/*']`, which is super fast.
+ */
 
 midiAccess.on(MidiAccess.TypeControlChange, ({ data, channel, input }) => {
   const [index, value] = data

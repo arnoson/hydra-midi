@@ -30,12 +30,18 @@ const setup = () => {
   isEnabled = true
 }
 
+/**
+ * Show the gui and set it up if necessary.
+ */
 export const show = () => {
   if (!isSetup) setup()
   gui.hidden = false
   isEnabled = true
 }
 
+/**
+ * Hide the gui.
+ */
 export const hide = () => {
   gui.hidden = true
   isEnabled = false
