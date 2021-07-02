@@ -1,11 +1,6 @@
 // @ts-check
 
-import { midiAccess } from '../midiAccess'
+import { start, pause } from '../midiAccess'
 import { channel, input } from '../transforms'
 
-export const midi = {
-  start: () => midiAccess.start(),
-  pause: () => midiAccess.pause(),
-  input,
-  channel
-}
+export const midi = { start, pause, input, channel }

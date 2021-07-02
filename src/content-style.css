@@ -1,0 +1,58 @@
+.hydra-midi-gui {
+  position: absolute;
+  /* Make space for hydra's audio monitor */
+  bottom: 80px;
+  right: 0;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  padding: 0.3em 0.5em;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #cccccc;
+  font-family: monospace;
+  line-height: 1.2em;
+  pointer-events: none;
+}
+
+.hydra-midi-messages {
+  white-space: pre;
+  /* Reserve spaces for line-height * 10 */
+  height: 12em;
+  width: 15ch;
+}
+
+.hydra-midi-heading {
+  margin-bottom: 3px;
+}
+
+.hydra-midi-message-on,
+.hydra-midi-message-off {
+  color: orange;
+}
+
+.hydra-midi-message-cc {
+  color: dodgerblue;
+}
+
+.hydra-midi-message-bnd {
+  color: #00d86c;
+}
+
+.hydra-midi-message-aft {
+  color: crimson;
+}
+
+.hydra-midi-input {
+  display: flex;
+  white-space: pre;
+}
+
+.hydra-midi-input-unavailable {
+  color: dimgray;
+}
+
+.hydra-midi-input-name {
+  display: block;
+  max-width: 12ch;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

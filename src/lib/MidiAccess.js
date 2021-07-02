@@ -48,11 +48,14 @@ export class MidiAccess extends SimpleEventEmitter {
     for (const input of this.access.inputs.values()) {
       input.addEventListener('midimessage', this.handleMessage.bind(this))
     }
+
+    this.access.addEventListener('statechange', console.log)
+
     this.isSetup = true
   }
 
-  start() {
-    if (!this.isSetup) this.setup()
+  async start() {
+    if (!this.isSetup) await this.setup()
     this.enabled = true
   }
 

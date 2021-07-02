@@ -4,6 +4,7 @@ import { ccValues } from './hydra-api/cc'
 import { playingNotes } from './hydra-api/note'
 import { envelopes } from './transforms/adsr'
 import { MidiAccess } from './lib/MidiAccess'
+import { logMidiMessage, showInputs } from './gui'
 
 export const midiAccess = new MidiAccess()
 
@@ -35,6 +36,13 @@ export const getMidiWildcards = (value, channel, input) => [
   getMidiId(value, '*', input)
 ]
 
+export const start = async () => {
+  await midiAccess.start()
+  showInputs(midiAccess.access.inputs)
+}
+
+export const pause = midiAccess.pause
+
 midiAccess.on(MidiAccess.TypeControlChange, ({ data, channel, input }) => {
   const [index, value] = data
   const ccId = getMidiId(index, channel, input.id)
@@ -44,6 +52,8 @@ midiAccess.on(MidiAccess.TypeControlChange, ({ data, channel, input }) => {
   getMidiWildcards(index, channel, input.id).forEach(
     wildcard => (ccValues[wildcard] = normalizedValue)
   )
+
+  logMidiMessage({ type: 'cc', channel, data })
 })
 
 midiAccess.on(MidiAccess.TypeNoteOn, ({ data, channel, input }) => {
@@ -56,6 +66,8 @@ midiAccess.on(MidiAccess.TypeNoteOn, ({ data, channel, input }) => {
     playingNotes.add(wildcard)
     envelopes[wildcard]?.trigger()
   })
+
+  logMidiMessage({ type: 'on', channel, data })
 })
 
 midiAccess.on(MidiAccess.TypeNoteOff, ({ data, channel, input }) => {
@@ -68,4 +80,19 @@ midiAccess.on(MidiAccess.TypeNoteOff, ({ data, channel, input }) => {
     playingNotes.delete(wildcard)
     envelopes[wildcard]?.stop()
   })
+
+  logMidiMessage({ type: 'off', channel, data })
+})
+
+midiAccess.on(MidiAccess.TypePitchBend, ({ data, channel }) => {
+  const value = ((data[1] * 128 + data[0] - 8192) / 8192).toFixed(2)
+  logMidiMessage({ type: 'bnd', channel, data: [value] })
+})
+
+midiAccess.on(MidiAccess.TypeAfterTouchChannel, ({ data, channel }) => {
+  logMidiMessage({ type: 'aft', channel, data })
+})
+
+midiAccess.on(MidiAccess.TypeAfterTouchPoly, ({ data, channel }) => {
+  logMidiMessage({ type: 'aft', channel, data })
 })

@@ -7,7 +7,7 @@
     {
       "matches": ["https://hydra.ojack.xyz/*"],
       "js": ["content-script.js"],
-      "css": []
+      "css": ["content-style.css"]
     }
   ]
 }
