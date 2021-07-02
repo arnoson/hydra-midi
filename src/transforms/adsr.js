@@ -12,11 +12,10 @@ export const envelopes = {}
  * Adsr is chainable to `note()`. It creates an envelope and returns a chainable
  * function, which in turn returns the envelope value at a given time.
  * @param {string} noteId
- * @returns
  */
-export const adsr = noteId => () => (a, d, s, r) => {
+export const adsr = noteId => () => (...args) => {
   // Perform a deep merge with the adsr defaults.
-  ;[a, d, s, r] = [a, d, s, r].map(
+  const [a, d, s, r] = args.map(
     (arg, i) => arg ?? state.defaults.adsr[i] ?? state.initialDefaults.adsr[i]
   )
 
