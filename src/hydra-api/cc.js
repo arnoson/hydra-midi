@@ -6,7 +6,11 @@ import { getMidiId, resolveInput } from '../midiAccess'
 import { scale, range, value } from '../transforms'
 
 const getCcId = (index, channel, input) =>
-  getMidiId(index, channel, resolveInput(input))
+  getMidiId(
+    index,
+    channel ?? state.defaults.channel,
+    resolveInput(input ?? state.defaults.input)
+  )
 
 /**
  * Return a CC value. This is useful if you want to use the value inside a
@@ -17,7 +21,7 @@ const getCcId = (index, channel, input) =>
  * @param {number|string} input
  * @returns
  */
-export const _cc = (index, channel, input = 0) =>
+export const _cc = (index, channel, input) =>
   state.ccValues[getCcId(index, channel, input)] ?? 0
 
 /**
@@ -30,7 +34,7 @@ export const _cc = (index, channel, input = 0) =>
  * input.
  * @returns
  */
-export const cc = (index, channel, input = 0) => {
+export const cc = (index, channel, input) => {
   const ccId = getCcId(index, channel, input)
   const fn = () => state.ccValues[ccId] ?? 0
   return chainable(fn, { scale, range, value })
