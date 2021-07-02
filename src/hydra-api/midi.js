@@ -5,12 +5,19 @@ import { channel, input } from '../transforms'
 import { show, hide, showInputs } from '../gui'
 import state from '../state'
 
-const start = async defaults => {
+const start = defaults => {
   state.defaults = { ...state.initialDefaults, ...defaults }
-  await midiAccess.start()
-  midiAccess.access.addEventListener('statechange', () =>
-    showInputs(midiAccess.access.inputs)
-  )
+
+  midiAccess
+    .start()
+    .then(() =>
+      midiAccess.access.addEventListener('statechange', () =>
+        showInputs(midiAccess.access.inputs)
+      )
+    )
+
+  // Allow `midi.start().show()` chaining.
+  return { show }
 }
 
 const pause = () => midiAccess.pause()
