@@ -1,11 +1,10 @@
 // @ts-check
 
 import { chainable, getNoteNumber } from '../utils'
+import { playingNotes } from '../state'
 import { scale, range } from '../transforms'
 import { adsr } from '../transforms/adsr'
 import { getMidiId, midiAccess } from '../midiAccess'
-
-export const playingNotes = new Set()
 
 const noteIsPlaying = noteId => playingNotes.has(noteId)
 

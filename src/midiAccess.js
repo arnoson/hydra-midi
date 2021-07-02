@@ -1,7 +1,6 @@
 // @ts-check
 
-import { ccValues } from './hydra-api/cc'
-import { playingNotes } from './hydra-api/note'
+import { ccValues, playingNotes } from './state'
 import { envelopes } from './transforms/adsr'
 import { MidiAccess } from './lib/MidiAccess'
 import { logMidiMessage, showInputs } from './gui'

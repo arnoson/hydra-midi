@@ -1,11 +1,9 @@
 // @ts-check
 
 import { chainable } from '../utils'
+import { ccValues } from '../state'
 import { getMidiId, midiAccess } from '../midiAccess'
 import { scale, range, value } from '../transforms'
-
-/** @type {Record<string, number>} */
-export const ccValues = {}
 
 export const _cc = (index, channel, input = 0) =>
   ccValues[getMidiId(index, channel, midiAccess.getInputId(input))] ?? 0

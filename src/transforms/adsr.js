@@ -2,7 +2,8 @@
 
 import { Envelope } from '../lib/Envelope'
 import { chainable } from '../utils'
-import { scale, range } from '.'
+import { scale } from './scale'
+import { range } from './range'
 
 export const envelopes = {}
 

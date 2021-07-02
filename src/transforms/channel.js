@@ -1,6 +1,7 @@
 // @ts-check
 
-import { cc, note } from '../hydra-api'
+import { cc } from '../hydra-api/cc'
+import { note } from '../hydra-api/note'
 
 export const channel = (channel, input = null) => ({
   note: (_note, _channel, _input) =>
