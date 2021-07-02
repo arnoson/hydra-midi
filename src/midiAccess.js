@@ -85,8 +85,9 @@ midiAccess.on(MidiAccess.TypeNoteOff, ({ data, channel, input }) => {
 })
 
 midiAccess.on(MidiAccess.TypePitchBend, ({ data, channel }) => {
-  const value = ((data[1] * 128 + data[0] - 8192) / 8192).toFixed(2)
-  logMidiMessage({ type: 'bnd', channel, data: [value] })
+  const value = ((data[1] << 7) + data[0] - 8192) / 8192
+  const displayValue = +value.toFixed(2)
+  logMidiMessage({ type: 'bnd', channel, data: [displayValue] })
 })
 
 midiAccess.on(MidiAccess.TypeAfterTouchChannel, ({ data, channel }) => {
