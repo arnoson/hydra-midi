@@ -2,7 +2,7 @@
 
 import { chainable } from '../utils'
 import { getMidiId, midiAccess } from '../midiAccess'
-import { scale, range } from '../transforms'
+import { scale, range, value } from '../transforms'
 
 /** @type {Record<string, number>} */
 export const ccValues = {}
@@ -19,5 +19,5 @@ export const _cc = (index, channel, input = 0) =>
 export const cc = (index, channel, input = 0) => {
   const ccId = getMidiId(index, channel, midiAccess.getInputId(input))
   const fn = () => ccValues[ccId] ?? 0
-  return chainable(fn, { scale, range })
+  return chainable(fn, { scale, range, value })
 }
