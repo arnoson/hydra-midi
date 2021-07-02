@@ -1,20 +1,23 @@
 // @ts-check
 
 import { chainable } from '../utils'
-import { getMidiId } from '../midi'
+import { getMidiId, midi } from '../midi'
 import { scale, range } from '../transforms'
 
 /** @type {Record<string, number>} */
 export const ccValues = {}
 
-export const _cc = (index, channel, device) =>
-  ccValues[getMidiId(index, channel, device)] ?? 0
+export const _cc = (index, channel, input = 0) =>
+  ccValues[getMidiId(index, channel, midi.getInputId(input))] ?? 0
 
 /**
  * @param {number} index
  * @param {number} channel
- * @param {string} device
+ * @param {string|number} input
  * @returns
  */
-export const cc = (index, channel, device) =>
-  chainable(() => _cc(index, channel, device), { scale, range })
+export const cc = (index, channel, input = 0) => {
+  const ccId = getMidiId(index, channel, midi.getInputId(input))
+  const fn = () => ccValues[ccId] ?? 0
+  return chainable(fn, { scale, range })
+}

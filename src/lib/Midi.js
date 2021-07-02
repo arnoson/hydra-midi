@@ -60,19 +60,27 @@ export class Midi extends SimpleEventEmitter {
     this.enabled = false
   }
 
+  getInputByIndex(index) {
+    return this.access && [...this.access.inputs.values()][index]
+  }
+
+  getInputByName(name) {
+    return (
+      this.access &&
+      [...this.access.inputs.values()].find(input => input.name === name)
+    )
+  }
+
   /**
    * Get a midi input's id by index or name.
    * @param {number|string} indexOrName
    * @returns {string}
    */
   getInputId(indexOrName) {
-    const { access } = this
-    if (!access) return
-
     const input =
       typeof indexOrName === 'number'
-        ? access.inputs.values()[indexOrName]
-        : [...access.inputs.values()].find(input => input.name === indexOrName)
+        ? this.getInputByIndex(indexOrName)
+        : this.getInputByName(indexOrName)
 
     return input?.id
   }

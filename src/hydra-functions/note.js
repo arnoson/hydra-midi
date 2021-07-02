@@ -3,25 +3,28 @@
 import { chainable, getNoteNumber } from '../utils'
 import { scale, range } from '../transforms'
 import { adsr } from '../transforms/adsr'
-import { getMidiId } from '../midi'
+import { getMidiId, midi } from '../midi'
 
 export const playingNotes = new Set()
 
 const noteIsPlaying = noteId => playingNotes.has(noteId)
 
-export const _note = (note, channel, device) =>
-  noteIsPlaying[getMidiId(getNoteNumber(note), channel, device)] ? 1 : 0
+export const _note = (note, channel, input = 0) => {
+  const noteId = getMidiId(getNoteNumber(note), channel, midi.getInputId(input))
+  return noteIsPlaying(noteId) ? 1 : 0
+}
 
 /**
  * @param {string|number|null} note
  * @param {number} channel
- * @param {string} device
+ * @param {number|string} input
  */
-export const note = (note, channel, device) => {
+export const note = (note, channel, input = 0) => {
   note = note === '*' ? note : getNoteNumber(note)
-  const id = getMidiId(note, channel, device)
+  const noteId = getMidiId(note, channel, midi.getInputId(input))
+
   // Use this function instead of `_note()` so we don't have resolve the note
   // number each time.
-  const fn = () => (noteIsPlaying(id) ? 1 : 0)
-  return chainable(fn, { scale, range, adsr: adsr(id) })
+  const fn = () => (noteIsPlaying(noteId) ? 1 : 0)
+  return chainable(fn, { scale, range, adsr: adsr(noteId) })
 }
