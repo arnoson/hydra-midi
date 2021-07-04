@@ -8,7 +8,6 @@ let inputs
 let messages
 
 const maxMessages = 10
-const messageStack = Array(maxMessages)
 let isSetup = false
 let isEnabled = false
 
@@ -19,7 +18,9 @@ const setup = () => {
     <div class="hydra-midi-inputs"></div>
     <span>⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯</span>
     <div class="hydra-midi-heading">Ch Type Values</div>
-    <div class="hydra-midi-messages"></div>
+    <div class="hydra-midi-messages">${[...Array(maxMessages)]
+      .map(() => `<div></div>`)
+      .join('')}</div>
   `
 
   document.body.append(gui)
@@ -84,11 +85,12 @@ export const logMidiMessage = message => {
   const data1 = pad(message.data[0])
   const data2 = message.data[1] ? pad(message.data[1]) : ''
 
-  messageStack.shift()
-  messageStack.push(
-    `<div style="color: var(--color-midi-${type}">${channel} ${type.toUpperCase()} ${data1} ${data2}</div>`
-  )
-  messages.innerHTML = messageStack.join('')
+  messages.removeChild(messages.firstChild)
+  const el = document.createElement('div')
+  el.style.color = `var(--color-midi-${type})`
+  el.innerHTML = [channel, type, data1, data2].join(' ')
+  messages.append(el)
+
   highlightInput(input, message.type)
 }
 
