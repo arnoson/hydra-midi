@@ -1,5 +1,5 @@
 // The page script is bundled by rollup (see `rollup.config.js`) and treated as
-// a text file so we import it as a string.
+// a text file so we can import it as a string.
 import pageScript from './page-script-bundle.js.txt'
 
 // The page script has to run in the same context as the hydra website so we can

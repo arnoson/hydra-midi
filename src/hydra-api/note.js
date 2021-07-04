@@ -2,8 +2,7 @@
 
 import { chainable } from '../utils'
 import state from '../state'
-import { scale, range } from '../transforms'
-import { adsr } from '../transforms/adsr'
+import { scale, range, adsr } from '../transforms'
 import { getMidiId, resolveNote, resolveInput } from '../midiAccess'
 
 const noteIsPlaying = noteId => state.playingNotes.has(noteId)
@@ -18,7 +17,7 @@ const getNoteId = (note, channel, input) =>
 /**
  * returns 1 if the specified note is playing, and 0 otherwise. This is useful
  * if you want to use the value inside a parameter function. See also {@link note}.
- * @example solid(1, 0, () => _note(60) * 0.5).out() // Could also be achieved with solid(1, 0, () => _note(60) * 0.5).out()
+ * @example solid(1, 0, () => _note(60) * 0.5).out() // Could also be achieved with solid(1, 0, note(60).value(v => v * 0.5)).out()
  * @param {number|string} note
  * @param {number|string} channel
  * @param {number|string} input
@@ -38,7 +37,6 @@ export const _note = (note, channel, input) =>
  */
 export const note = (note, channel, input) => {
   const noteId = getNoteId(note, channel, input)
-  console.log(noteId)
   const fn = () => (noteIsPlaying(noteId) ? 1 : 0)
   return chainable(fn, { scale, range, adsr: adsr(noteId) })
 }

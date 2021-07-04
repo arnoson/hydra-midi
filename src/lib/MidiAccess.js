@@ -27,8 +27,6 @@ export class MidiAccess extends SimpleEventEmitter {
 
   enabled = false
   isSetup = false
-  /** @type {Record<string, function[]>} */
-  listeners = {}
   /** @type {WebMidi.MIDIAccess} */
   access = null
 

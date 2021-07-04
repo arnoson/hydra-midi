@@ -1,7 +1,6 @@
 // @ts-check
 
 /**
- *
  * @param {number} value
  * @param {number} from
  * @param {number} to

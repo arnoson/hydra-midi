@@ -5,6 +5,7 @@ import { chainable } from '../utils'
 import { scale } from './scale'
 import { range } from './range'
 import state from '../state'
+import { value } from './value'
 
 export const envelopes = {}
 
@@ -22,5 +23,9 @@ export const adsr = noteId => () => (...args) => {
   envelopes[noteId] = new Envelope({ a, d, s, r })
   const envelope = envelopes[noteId]
 
-  return chainable(({ time }) => envelope.value(time * 1000), { scale, range })
+  return chainable(({ time }) => envelope.value(time * 1000), {
+    scale,
+    range,
+    value
+  })
 }
