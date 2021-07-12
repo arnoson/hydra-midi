@@ -14,9 +14,9 @@ export const envelopes = {}
  * function, which in turn returns the envelope value at a given time.
  * @param {string} noteId
  */
-export const adsr = noteId => () => (...args) => {
+export const adsr = noteId => () => (a, d, s, r) => {
   // Perform a deep merge with the adsr defaults.
-  const [a, d, s, r] = args.map(
+  ;[a, d, s, r] = [a, d, s, r].map(
     (arg, i) => arg ?? state.defaults.adsr[i] ?? state.initialDefaults.adsr[i]
   )
 
