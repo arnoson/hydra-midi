@@ -1,10 +1,15 @@
-# <img width="26" style="margin-bottom: -2px" src="./src/assets/hydra-midi-icon-128.png"> Hydra Midi
+# <img width="26" src="./src/assets/hydra-midi-icon-128.png"> Hydra Midi
 
-Chrome extension for using midi with https://hydra.ojack.xyz
+A Chrome Extension for using midi with https://hydra.ojack.xyz.
 
 ## Installation
 
-Install via ... and
+Release to Chrome Web Store coming soon!
+There is no support for Firefox or Safari, as Web Midi is only working in chromium based browsers.
+
+## Important
+
+When you open a hydra patch the extension might not be ready yet. You will see an error `midi is not defined` in the hydra console. Just re-run the hydra script and everything should work.
 
 ## Usage
 
@@ -31,7 +36,7 @@ solid(cc(74), 0, 1).out()
 ### Use an envelope and scale it
 
 ```js
-// Use midi messages from all channels of all inputs
+// Use midi messages from all channels of all inputs.
 midi.start({ input: '*', channel: '*' })
 midi.show()
 
@@ -211,7 +216,7 @@ note(60)
   .value(v => Math.sin(v))
 ```
 
-### Access midi values directly
+### Accessing midi values directly
 
 `note()` and `cc()` do not directly return the corresponding values. Instead they return a function. This is useful for usage as a parameter as the the values are updated automatically:
 
