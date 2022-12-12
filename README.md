@@ -1,15 +1,10 @@
-# <img width="26" src="./src/assets/hydra-midi-icon-128.png"> Hydra Midi
+# Hydra Midi
 
-A Chrome Extension for using midi with https://hydra.ojack.xyz.
-
-## Installation
-
-Release to Chrome Web Store coming soon!
-There is no support for Firefox or Safari, as Web Midi is only working in chromium based browsers.
+A utility script for using midi with https://hydra.ojack.xyz.
 
 ## Important
 
-When you open a hydra patch the extension might not be ready yet. You will see an error `midi is not defined` in the hydra console. Just re-run the hydra script and everything should work.
+Showing the GUI (`midi.show()`) is only working when you re-run the script, should be fixed soon.
 
 ## Usage
 
@@ -18,8 +13,10 @@ Visit https://hydra.ojack.xyz. The Hydra Midi Extension will get activated autom
 Start (and optionally show) midi and use midi inputs as parameters for hydra:
 
 ```js
-// Start midi and select the first channel of the first available midi input.
-midi.start()
+await loadScript('https://cdn.jsdelivr.net/gh/arnoson/hydra-midi/dist/index.js')
+
+// Use midi messages from all channels of all inputs.
+midi.start({ channel: '*', input: '*' })
 // Show a small midi monitor (similar to hydra's `a.show()`).
 midi.show()
 
@@ -31,31 +28,31 @@ solid(note('*'), 0, 1).out()
 solid(cc(74), 0, 1).out()
 ```
 
+[Edit on hydra](https://hydra.ojack.xyz/?code=YXdhaXQlMjBsb2FkU2NyaXB0KCUyMmh0dHBzJTNBJTJGJTJGY2RuLmpzZGVsaXZyLm5ldCUyRmdoJTJGYXJub3NvbiUyRmh5ZHJhLW1pZGklMkZkaXN0JTJGaW5kZXguanMlMjIpJTBBJTBBJTJGJTJGJTIwVXNlJTIwbWlkaSUyMG1lc3NhZ2VzJTIwZnJvbSUyMGFsbCUyMGNoYW5uZWxzJTIwb2YlMjBhbGwlMjBpbnB1dHMuJTBBbWlkaS5zdGFydCglN0IlMjBjaGFubmVsJTIwJTNBJTIwJyonJTJDJTIwaW5wdXQlM0ElMjAnKiclMjAlN0QpJTBBJTJGJTJGJTIwU2hvdyUyMGElMjBzbWFsbCUyMG1pZGklMjBtb25pdG9yJTIwKHNpbWlsYXIlMjB0byUyMGh5ZHJhJ3MlMjAlNjBhLnNob3coKSU2MCkuJTBBbWlkaS5zaG93KCklMEElMEElMkYlMkYlMjBVc2UlMjBhbnklMjBub3RlJTIwdG8lMjBjb250cm9sJTIwdGhlJTIwcmVkJTIwYW1vdW50JTIwb2YlMjBoeWRyYSdzJTIwJTYwc29saWQoKSU2MCUyMGZ1bmN0aW9uLiUwQXNvbGlkKG5vdGUoJyonKSUyQyUyMDAlMkMlMjAxKS5vdXQoKSUwQSUwQSUyRiUyRiUyME9yJTJDJTIwaWYlMjB5b3UlMjBhcmUlMjB1c2luZyUyMGElMjBtaWRpJTIwY29udHJvbGxlciUyMGFuZCUyMG5vdCUyMGElMjBrZXlib2FyZCUzQSUwQSUyRiUyRiUyMFVzZSUyMGElMjBjb250cm9sJTIwY2hhbmdlJTIwdmFsdWUlMjB0byUyMGNvbnRyb2wlMjB0aGUlMjByZWQlMjBhbW91bnQuJTBBc29saWQoY2MoNzQpJTJDJTIwMCUyQyUyMDEpLm91dCgp)
+
 ## Examples
 
 ### Use an envelope and scale it
 
 ```js
+await loadScript('https://cdn.jsdelivr.net/gh/arnoson/hydra-midi/dist/index.js')
+
 // Use midi messages from all channels of all inputs.
 midi.start({ input: '*', channel: '*' })
 midi.show()
 
 // Trigger an ADSR envelope each time the note C3 is played and scale
 // the value to a range between 20 and 50.
-osc(
-  note('C3')
-    .adsr(300, 200, 1, 300)
-    .range(20, 50),
-  0,
-  0
-).out()
+osc(note('C3').adsr(300, 200, 1, 300).range(20, 50), 0, 0).out()
 ```
 
-[Edit on hydra](https://hydra.ojack.xyz/?code=JTJGJTJGJTIwVXNlJTIwbWlkaSUyMG1lc3NhZ2VzJTIwZnJvbSUyMGFsbCUyMGNoYW5uZWxzJTIwb2YlMjBhbGwlMjBpbnB1dHMlMEFtaWRpLnN0YXJ0KCU3QiUyMGlucHV0JTNBJTIwJTIyKiUyMiUyQyUyMGNoYW5uZWwlM0ElMjAlMjIqJTIyJTIwJTdEKSUwQW1pZGkuc2hvdygpJTBBJTBBJTJGJTJGJTIwVHJpZ2dlciUyMGFuJTIwQURTUiUyMGVudmVsb3BlJTIwZWFjaCUyMHRpbWUlMjB0aGUlMjBub3RlJTIwQzMlMjBpcyUyMHBsYXllZCUyMGFuZCUyMHNjYWxlJTBBJTJGJTJGJTIwdGhlJTIwdmFsdWUlMjB0byUyMGElMjByYW5nZSUyMGJldHdlZW4lMjAyMCUyMGFuZCUyMDUwLiUwQW9zYyglMEElMjAlMjBub3RlKCUyMkMzJTIyKS5hZHNyKDMwMCUyQyUyMDIwMCUyQyUyMDElMkMlMjAzMDApLnJhbmdlKDIwJTJDJTIwNTApJTJDJTBBJTIwJTIwMCUyQyUwQSUyMCUyMDAlMEEpLm91dCgpJTBB) (You might have to re-run all code)
+[Edit on hydra](https://hydra.ojack.xyz/?code=YXdhaXQlMjBsb2FkU2NyaXB0KCUyMmh0dHBzJTNBJTJGJTJGY2RuLmpzZGVsaXZyLm5ldCUyRmdoJTJGYXJub3NvbiUyRmh5ZHJhLW1pZGklMkZkaXN0JTJGaW5kZXguanMlMjIpJTBBJTBBJTJGJTJGJTIwVXNlJTIwbWlkaSUyMG1lc3NhZ2VzJTIwZnJvbSUyMGFsbCUyMGNoYW5uZWxzJTIwb2YlMjBhbGwlMjBpbnB1dHMuJTBBbWlkaS5zdGFydCglN0IlMjBpbnB1dCUzQSUyMCcqJyUyQyUyMGNoYW5uZWwlM0ElMjAnKiclMjAlN0QpJTBBbWlkaS5zaG93KCklMEElMEElMkYlMkYlMjBUcmlnZ2VyJTIwYW4lMjBBRFNSJTIwZW52ZWxvcGUlMjBlYWNoJTIwdGltZSUyMHRoZSUyMG5vdGUlMjBDMyUyMGlzJTIwcGxheWVkJTIwYW5kJTIwc2NhbGUlMEElMkYlMkYlMjB0aGUlMjB2YWx1ZSUyMHRvJTIwYSUyMHJhbmdlJTIwYmV0d2VlbiUyMDIwJTIwYW5kJTIwNTAuJTBBb3NjKCUwQSUyMCUyMG5vdGUoJ0MzJyklMEElMjAlMjAlMjAlMjAuYWRzcigzMDAlMkMlMjAyMDAlMkMlMjAxJTJDJTIwMzAwKSUwQSUyMCUyMCUyMCUyMC5yYW5nZSgyMCUyQyUyMDUwKSUyQyUwQSUyMCUyMDAlMkMlMEElMjAlMjAwJTBBKS5vdXQoKQ%3D%3D)
 
 ### Use multiple midi controllers
 
 ```js
+await loadScript('https://cdn.jsdelivr.net/gh/arnoson/hydra-midi/dist/index.js')
+
 midi.start()
 midi.show()
 
@@ -72,20 +69,14 @@ faderfox = midi.input(1)
 // Modulate the noise speed with the seaboard's CC74 values (of any channel).
 noise(10, seaboard.cc(74))
   // Use any note on the seaboard to modulate the threshold.
-  .thresh(
-    seaboard
-      .note('*')
-      .adsr()
-      .scale(0.6),
-    0.1
-  )
+  .thresh(seaboard.note('*').adsr().scale(0.6), 0.1)
   // Use the first 3 faders (which happen to be CC40–CC42 on channel 12) of the
   // faderfox to mix a color.
   .color(faderfox.cc(40, 12), faderfox.cc(41, 12), faderfox.cc(42, 12))
   .out()
 ```
 
-[Edit on hydra](https://hydra.ojack.xyz/?code=bWlkaS5zdGFydCgpJTBBbWlkaS5zaG93KCklMEElMEElMkYlMkYlMjBTYXZlJTIwaW5wdXQlMjAwJTIwKHdoaWNoJTIwaW4lMjB0aGlzJTIwaXMlMjBleGFtcGxlJTIwY291bGQlMjBiZSUyMGElMjBzZWFib2FyZCUyMGJsb2NrKSUyMGluJTIwYSUwQSUyRiUyRiUyMHZhcmlhYmxlLiUyMEFzJTIwdGhlJTIwc2VhYm9hcmQlMjBpcyUyMGFuJTIwTVBFLWtleWJvYXJkJTIwaXQlMjBtYWtlcyUyMHNlbnNlJTIwdG8lMjBsaXN0ZW4lMjB0byUyMGFsbCUwQSUyRiUyRiUyMGNoYW5uZWxzJTIwYnklMjBkZWZhdWx0LiUwQXNlYWJvYXJkJTIwJTNEJTIwbWlkaS5pbnB1dCgwKS5jaGFubmVsKCcqJyklMEElMEElMkYlMkYlMjBTYXZlJTIwaW5wdXQlMjAxJTIwKGZvciUyMGV4YW1wbGUlMjBhJTIwZmFkZXJmb3gpJTIwaW4lMjBhJTIwdmFyaWFibGUuJTIwV2UlMjBkb24ndCUyMHNwZWNpZnklMjB0aGUlMEElMkYlMkYlMjBjaGFubmVsJTIwc28lMjBpdCUyMGRlZmF1bHRzJTIwdG8lMjBjaGFubmVsJTIwMC4lMjBUbyUyMHVzZSUyMGFub3RoZXIlMjBjaGFubmVsJTIwd2UlMjBoYXZlJTIwdG8lMjBzZWxlY3QlMEElMkYlMkYlMjBpdCUyMGV4cGxpY2l0bHklMjBpbiUyMHRoZSUyMCU2MG5vdGUoKSU2MCUyMG9yJTIwJTYwY2MoKSU2MCUyMGZ1bmN0aW9ucy4lMEFmYWRlcmZveCUyMCUzRCUyMG1pZGkuaW5wdXQoMSklMEElMEElMkYlMkYlMjBNb2R1bGF0ZSUyMHRoZSUyMG5vaXNlJTIwc3BlZWQlMjB3aXRoJTIwdGhlJTIwc2VhYm9hcmQncyUyMENDNzQlMjB2YWx1ZXMlMjAob2YlMjBhbnklMjBjaGFubmVsKS4lMEFub2lzZSgxMCUyQyUyMHNlYWJvYXJkLmNjKDc0KSklMEElMjAlMjAlMkYlMkYlMjBVc2UlMjBhbnklMjBub3RlJTIwb24lMjB0aGUlMjBzZWFib2FyZCUyMHRvJTIwbW9kdWxhdGUlMjB0aGUlMjB0aHJlc2hvbGQuJTBBJTIwJTIwLnRocmVzaCglMEElMjAlMjAlMjAlMjBzZWFib2FyZCUwQSUyMCUyMCUyMCUyMCUyMCUyMC5ub3RlKCcqJyklMEElMjAlMjAlMjAlMjAlMjAlMjAuYWRzcigpJTBBJTIwJTIwJTIwJTIwJTIwJTIwLnNjYWxlKDAuNiklMkMlMEElMjAlMjAlMjAlMjAwLjElMEElMjAlMjApJTBBJTIwJTIwJTJGJTJGJTIwVXNlJTIwdGhlJTIwZmlyc3QlMjAzJTIwZmFkZXJzJTIwKHdoaWNoJTIwaGFwcGVuJTIwdG8lMjBiZSUyMENDNDAlRTIlODAlOTNDQzQyJTIwb24lMjBjaGFubmVsJTIwMTIpJTIwb2YlMjB0aGUlMEElMjAlMjAlMkYlMkYlMjBmYWRlcmZveCUyMHRvJTIwbWl4JTIwYSUyMGNvbG9yLiUwQSUyMCUyMC5jb2xvciglMEElMjAlMjAlMDlmYWRlcmZveC5jYyg0MCUyQyUyMDEyKSUyQyUyMGZhZGVyZm94LmNjKDQxJTJDJTIwMTIpJTJDJTIwZmFkZXJmb3guY2MoNDIlMkMlMjAxMikpJTBBJTIwJTIwLm91dCgpJTBBJTBBJTBBJTBBJTBB)
+[Edit on hydra](https://hydra.ojack.xyz/?code=YXdhaXQlMjBsb2FkU2NyaXB0KCUyMmh0dHBzJTNBJTJGJTJGY2RuLmpzZGVsaXZyLm5ldCUyRmdoJTJGYXJub3NvbiUyRmh5ZHJhLW1pZGklMkZkaXN0JTJGaW5kZXguanMlMjIpJTBBJTBBbWlkaS5zdGFydCgpJTBBbWlkaS5zaG93KCklMEElMEElMkYlMkYlMjBTYXZlJTIwaW5wdXQlMjAwJTIwKHdoaWNoJTIwaW4lMjB0aGlzJTIwaXMlMjBleGFtcGxlJTIwY291bGQlMjBiZSUyMGElMjBzZWFib2FyZCUyMGJsb2NrKSUyMGluJTIwYSUwQSUyRiUyRiUyMHZhcmlhYmxlLiUyMEFzJTIwdGhlJTIwc2VhYm9hcmQlMjBpcyUyMGFuJTIwTVBFLWtleWJvYXJkJTIwaXQlMjBtYWtlcyUyMHNlbnNlJTIwdG8lMjBsaXN0ZW4lMjB0byUyMGFsbCUwQSUyRiUyRiUyMGNoYW5uZWxzJTIwYnklMjBkZWZhdWx0LiUwQXNlYWJvYXJkJTIwJTNEJTIwbWlkaS5pbnB1dCgwKS5jaGFubmVsKCcqJyklMEElMEElMkYlMkYlMjBTYXZlJTIwaW5wdXQlMjAxJTIwKGZvciUyMGV4YW1wbGUlMjBhJTIwZmFkZXJmb3gpJTIwaW4lMjBhJTIwdmFyaWFibGUuJTIwV2UlMjBkb24ndCUyMHNwZWNpZnklMjB0aGUlMEElMkYlMkYlMjBjaGFubmVsJTIwc28lMjBpdCUyMGRlZmF1bHRzJTIwdG8lMjBjaGFubmVsJTIwMC4lMjBUbyUyMHVzZSUyMGFub3RoZXIlMjBjaGFubmVsJTIwd2UlMjBoYXZlJTIwdG8lMjBzZWxlY3QlMEElMkYlMkYlMjBpdCUyMGV4cGxpY2l0bHklMjBpbiUyMHRoZSUyMCU2MG5vdGUoKSU2MCUyMG9yJTIwJTYwY2MoKSU2MCUyMGZ1bmN0aW9ucy4lMEFmYWRlcmZveCUyMCUzRCUyMG1pZGkuaW5wdXQoMSklMEElMEElMkYlMkYlMjBNb2R1bGF0ZSUyMHRoZSUyMG5vaXNlJTIwc3BlZWQlMjB3aXRoJTIwdGhlJTIwc2VhYm9hcmQncyUyMENDNzQlMjB2YWx1ZXMlMjAob2YlMjBhbnklMjBjaGFubmVsKS4lMEFub2lzZSgxMCUyQyUyMHNlYWJvYXJkLmNjKDc0KSklMEElMjAlMjAlMkYlMkYlMjBVc2UlMjBhbnklMjBub3RlJTIwb24lMjB0aGUlMjBzZWFib2FyZCUyMHRvJTIwbW9kdWxhdGUlMjB0aGUlMjB0aHJlc2hvbGQuJTBBJTIwJTIwLnRocmVzaCglMEElMjAlMjAlMjAlMjBzZWFib2FyZCUwQSUyMCUyMCUyMCUyMCUyMCUyMC5ub3RlKCcqJyklMEElMjAlMjAlMjAlMjAlMjAlMjAuYWRzcigpJTBBJTIwJTIwJTIwJTIwJTIwJTIwLnNjYWxlKDAuNiklMkMlMEElMjAlMjAlMjAlMjAwLjElMEElMjAlMjApJTBBJTIwJTIwJTJGJTJGJTIwVXNlJTIwdGhlJTIwZmlyc3QlMjAzJTIwZmFkZXJzJTIwKHdoaWNoJTIwaGFwcGVuJTIwdG8lMjBiZSUyMENDNDAlRTIlODAlOTNDQzQyJTIwb24lMjBjaGFubmVsJTIwMTIpJTIwb2YlMjB0aGUlMEElMjAlMjAlMkYlMkYlMjBmYWRlcmZveCUyMHRvJTIwbWl4JTIwYSUyMGNvbG9yLiUwQSUyMCUyMC5jb2xvcihmYWRlcmZveC5jYyg0MCUyQyUyMDEyKSUyQyUyMGZhZGVyZm94LmNjKDQxJTJDJTIwMTIpJTJDJTIwZmFkZXJmb3guY2MoNDIlMkMlMjAxMikpJTBBJTIwJTIwLm91dCgp)
 
 ## Documentation
 
@@ -107,7 +98,7 @@ midi.start({
 
   // Default attack, decay, sustain and release values for the `adsr()` function
   // that can be chained to `note()`.
-  adsr: [100, 100, 1, 100]
+  adsr: [100, 100, 1, 100],
 })
 ```
 
@@ -192,9 +183,7 @@ Values from `note()`, `cc()` and `adsr()` can be transformed using the following
 Scale the value by a factor.
 
 ```js
-note(60)
-  .adsr()
-  .scale(20)
+note(60).adsr().scale(20)
 cc(40).scale(3)
 ```
 
@@ -234,7 +223,5 @@ osc(() => _cc(40) * 2, 0, 0).out() // This could also be achieved with `scale()`
 ```js
 // This will only set the value when executing the script and won't update.
 noteIsPlaying = _note(60)
-solid(1, 0, 0)
-  .invert(noteIsPlaying)
-  .out()
+solid(1, 0, 0).invert(noteIsPlaying).out()
 ```
