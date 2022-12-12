@@ -1,5 +1,8 @@
 // @ts-check
 
+// @ts-ignore
+import css from './index.css'
+
 /** @type {HTMLElement|null} */
 let gui
 /** @type {HTMLElement|null} */
@@ -12,6 +15,10 @@ let isSetup = false
 let isEnabled = false
 
 const setup = () => {
+  const style = document.createElement('style')
+  style.innerText = css
+  document.head.append(style)
+
   gui = document.createElement('div')
   gui.classList.add('hydra-midi-gui')
   gui.innerHTML = `
