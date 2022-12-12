@@ -15,14 +15,13 @@ let isSetup = false
 let isEnabled = false
 
 const setup = () => {
-  document.addEventListener('DOMContentLoaded', () => {
-    const style = document.createElement('style')
-    style.innerText = css
-    document.head.append(style)
+  const style = document.createElement('style')
+  style.innerText = css
+  document.head.append(style)
 
-    gui = document.createElement('div')
-    gui.classList.add('hydra-midi-gui')
-    gui.innerHTML = `
+  gui = document.createElement('div')
+  gui.classList.add('hydra-midi-gui')
+  gui.innerHTML = `
       <div class="hydra-midi-inputs"></div>
       <span>⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯</span>
       <div class="hydra-midi-heading">Ch Type Values</div>
@@ -31,13 +30,12 @@ const setup = () => {
         .join('')}</div>
     `
 
-    document.body.append(gui)
-    inputs = gui.querySelector('.hydra-midi-inputs')
-    messages = gui.querySelector('.hydra-midi-messages')
+  document.body.append(gui)
+  inputs = gui.querySelector('.hydra-midi-inputs')
+  messages = gui.querySelector('.hydra-midi-messages')
 
-    isSetup = true
-    isEnabled = true
-  })
+  isSetup = true
+  isEnabled = true
 }
 
 /**
