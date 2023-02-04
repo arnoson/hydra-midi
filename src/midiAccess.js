@@ -8,7 +8,7 @@ import { getNoteNumber } from './utils'
 
 // Those properties will never change, only their content, so it's save to
 // destructure.
-const { ccValues, playingNotes } = state
+const { ccValues, playingNotes, noteOnEvents } = state
 
 // Expose the `MidiAccess` instance because we need it in other files too.
 export const midiAccess = new MidiAccess()
