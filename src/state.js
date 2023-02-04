@@ -5,6 +5,9 @@ export default {
   /** @type {Set<string>} */
   playingNotes: new Set(),
 
+  /** @type {Record<string, function>} */
+  noteOnEvents: {},
+
   initialDefaults: {
     channel: 0,
     input: 0,
