@@ -1,7 +1,8 @@
 // @ts-check
 
-import { cc } from '../hydra-api/cc'
-import { note } from '../hydra-api/note'
+import { cc } from "../hydra-api/cc";
+import { note } from "../hydra-api/note";
+import { onNote } from "../hydra-api/onNote";
 
 /**
  * Channel is chainable to `midi` and `input()` and provides a channel for all
@@ -13,9 +14,11 @@ import { note } from '../hydra-api/note'
  * @returns
  */
 export const channel = (channel, input = null) => ({
-  note: (_note, _channel, _input) =>
-    note(_note, _channel ?? channel, _input ?? input),
+    note: (_note, _channel, _input) =>
+        note(_note, _channel ?? channel, _input ?? input),
 
-  cc: (_index, _channel, _input) =>
-    cc(_index, _channel ?? channel, _input ?? input)
-})
+    cc: (_index, _channel, _input) =>
+        cc(_index, _channel ?? channel, _input ?? input),
+
+    onNote: (_note, _event) => onNote(_note, channel, input ?? "*", _event),
+});

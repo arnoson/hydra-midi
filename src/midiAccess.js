@@ -8,7 +8,7 @@ import { getNoteNumber } from './utils'
 
 // Those properties will never change, only their content, so it's save to
 // destructure.
-const { ccValues, playingNotes } = state
+const { ccValues, playingNotes, noteOnEvents } = state
 
 // Expose the `MidiAccess` instance because we need it in other files too.
 export const midiAccess = new MidiAccess()
@@ -82,10 +82,12 @@ midiAccess.on(MidiAccess.TypeNoteOn, ({ data, channel, input }) => {
   const noteId = getMidiId(note, channel, input.id)
   playingNotes.add(noteId)
   envelopes[noteId]?.trigger()
+  noteOnEvents[noteId]?.call()
 
   getMidiWildcards(note, channel, input.id).forEach(wildcard => {
     playingNotes.add(wildcard)
     envelopes[wildcard]?.trigger()
+    noteOnEvents[wildcard]?.call()
   })
 
   logMidiMessage({ input, type: 'on', channel, data })

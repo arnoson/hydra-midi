@@ -7,7 +7,7 @@ import { getMidiId, resolveNote, resolveInput } from '../midiAccess'
 
 const noteIsPlaying = noteId => state.playingNotes.has(noteId)
 
-const getNoteId = (note, channel, input) =>
+export const getNoteId = (note, channel, input) =>
   getMidiId(
     resolveNote(note),
     channel ?? state.defaults.channel,

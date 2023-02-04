@@ -4,7 +4,8 @@ A utility script for using midi with https://hydra.ojack.xyz.
 
 ## Important
 
-Showing the GUI (`midi.show()`) is only working when you re-run the script, should be fixed soon.
+* Showing the GUI (`midi.show()`) is only working when you re-run the script, should be fixed soon.
+* This extension uses C3 as middle C (midi note 60).
 
 ## Usage
 
@@ -172,6 +173,18 @@ cc(
   // An input index or input name. (Show the midi monitor to see the indexes).
   input?
 )
+```
+
+### .onNote()
+
+You can define an event to trigger when a particular note is played on a specific input or channel:
+
+```js
+myController = midi.input(3).channel(15)
+
+myController.onNote('c1', () => {
+  osc().out()
+})
 ```
 
 ### Transforms
