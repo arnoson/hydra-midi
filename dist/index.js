@@ -679,7 +679,7 @@
         cc: (_index, _channel, _input) =>
             cc(_index, _channel ?? channel, _input ?? input),
 
-        onNote: (_note, _event) => onNote(_note, channel, input, _event),
+        onNote: (_note, _event) => onNote(_note, channel, input ?? "*", _event),
     });
 
     // @ts-check
