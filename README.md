@@ -4,8 +4,8 @@ A utility script for using midi with https://hydra.ojack.xyz.
 
 ## Important
 
-* Showing the GUI (`midi.show()`) is only working when you re-run the script, should be fixed soon.
-* This extension uses C3 as middle C (midi note 60).
+- Showing the GUI (`midi.show()`) is only working when you re-run the script, should be fixed soon.
+- This extension uses C3 as middle C (midi note 60).
 
 ## Usage
 
@@ -14,7 +14,9 @@ Visit https://hydra.ojack.xyz. The Hydra Midi Extension will get activated autom
 Start (and optionally show) midi and use midi inputs as parameters for hydra:
 
 ```js
-await loadScript('https://cdn.jsdelivr.net/gh/arnoson/hydra-midi/dist/index.js')
+await loadScript(
+  'https://cdn.jsdelivr.net/gh/arnoson/hydra-midi@latest/dist/index.js'
+)
 
 // Use midi messages from all channels of all inputs.
 midi.start({ channel: '*', input: '*' })
@@ -36,7 +38,9 @@ solid(cc(74), 0, 1).out()
 ### Use an envelope and scale it
 
 ```js
-await loadScript('https://cdn.jsdelivr.net/gh/arnoson/hydra-midi/dist/index.js')
+await loadScript(
+  'https://cdn.jsdelivr.net/gh/arnoson/hydra-midi@latest/dist/index.js'
+)
 
 // Use midi messages from all channels of all inputs.
 midi.start({ input: '*', channel: '*' })
@@ -52,7 +56,9 @@ osc(note('C3').adsr(300, 200, 1, 300).range(20, 50), 0, 0).out()
 ### Use multiple midi controllers
 
 ```js
-await loadScript('https://cdn.jsdelivr.net/gh/arnoson/hydra-midi/dist/index.js')
+await loadScript(
+  'https://cdn.jsdelivr.net/gh/arnoson/hydra-midi@latest/dist/index.js'
+)
 
 midi.start()
 midi.show()
@@ -175,7 +181,7 @@ cc(
 )
 ```
 
-### .onNote()
+### .onNote() `since v0.1.0`
 
 You can define an event to trigger when a particular note is played on a specific input or channel:
 
