@@ -580,6 +580,7 @@
         getMidiWildcards(note, channel, input.id).forEach((wildcard) => {
             playingNotes.add(wildcard);
             envelopes[wildcard]?.trigger();
+            noteOnEvents[wildcard]?.call();
         });
 
         logMidiMessage({ input, type: "on", channel, data });
