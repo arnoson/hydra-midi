@@ -86,6 +86,9 @@
     /** @type {Set<string>} */
     playingNotes: new Set(),
 
+    /** @type {Record<string, function>} */
+    noteOnEvents: {},
+
     initialDefaults: {
       channel: 0,
       input: 0,
@@ -354,7 +357,7 @@
     }
   }
 
-  var css = ".hydra-midi-gui {\r\n  position: absolute;\r\n  /* Make space for hydra's audio monitor */\r\n  bottom: 80px;\r\n  right: 0;\r\n  margin-bottom: 20px;\r\n  margin-right: 20px;\r\n  padding: 0.3em 0.5em;\r\n  background-color: rgba(0, 0, 0, 0.6);\r\n  color: #cccccc;\r\n  font-family: monospace;\r\n  line-height: 1.2em;\r\n  pointer-events: none;\r\n\r\n  --color-midi-on: orange;\r\n  --color-midi-off: orange;\r\n  --color-midi-cc: dodgerblue;\r\n  --color-midi-bend: #00d86c;\r\n  --color-midi-aft: #e34040;\r\n}\r\n\r\n.hydra-midi-messages {\r\n  white-space: pre;\r\n  /* Reserve spaces for line-height * 10 */\r\n  height: 12em;\r\n  width: 15ch;\r\n}\r\n\r\n.hydra-midi-heading {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.hydra-midi-input {\r\n  display: flex;\r\n  white-space: pre;\r\n}\r\n\r\n.hydra-midi-input-name {\r\n  display: block;\r\n  max-width: 12ch;\r\n  text-overflow: ellipsis;\r\n  overflow: hidden;\r\n}\r\n";
+  var css = ".hydra-midi-gui {\n  position: absolute;\n  /* Make space for hydra's audio monitor */\n  bottom: 80px;\n  right: 0;\n  margin-bottom: 20px;\n  margin-right: 20px;\n  padding: 0.3em 0.5em;\n  background-color: rgba(0, 0, 0, 0.6);\n  color: #cccccc;\n  font-family: monospace;\n  line-height: 1.2em;\n  pointer-events: none;\n\n  --color-midi-on: orange;\n  --color-midi-off: orange;\n  --color-midi-cc: dodgerblue;\n  --color-midi-bend: #00d86c;\n  --color-midi-aft: #e34040;\n}\n\n.hydra-midi-messages {\n  white-space: pre;\n  /* Reserve spaces for line-height * 10 */\n  height: 12em;\n  width: 15ch;\n}\n\n.hydra-midi-heading {\n  margin-bottom: 3px;\n}\n\n.hydra-midi-input {\n  display: flex;\n  white-space: pre;\n}\n\n.hydra-midi-input-name {\n  display: block;\n  max-width: 12ch;\n  text-overflow: ellipsis;\n  overflow: hidden;\n}\n";
 
   // @ts-check
 
@@ -370,14 +373,13 @@
   let isEnabled = false;
 
   const setup = () => {
-    document.addEventListener('DOMContentLoaded', () => {
-      const style = document.createElement('style');
-      style.innerText = css;
-      document.head.append(style);
+    const style = document.createElement('style');
+    style.innerText = css;
+    document.head.append(style);
 
-      gui = document.createElement('div');
-      gui.classList.add('hydra-midi-gui');
-      gui.innerHTML = `
+    gui = document.createElement('div');
+    gui.classList.add('hydra-midi-gui');
+    gui.innerHTML = `
       <div class="hydra-midi-inputs"></div>
       <span>⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯</span>
       <div class="hydra-midi-heading">Ch Type Values</div>
@@ -386,13 +388,12 @@
         .join('')}</div>
     `;
 
-      document.body.append(gui);
-      inputs = gui.querySelector('.hydra-midi-inputs');
-      messages = gui.querySelector('.hydra-midi-messages');
+    document.body.append(gui);
+    inputs = gui.querySelector('.hydra-midi-inputs');
+    messages = gui.querySelector('.hydra-midi-messages');
 
-      isSetup = true;
-      isEnabled = true;
-    });
+    isSetup = true;
+    isEnabled = true;
   };
 
   /**
@@ -554,6 +555,7 @@
     const noteId = getMidiId(note, channel, input.id);
     playingNotes.add(noteId);
     envelopes[noteId]?.trigger();
+    noteOnEvents[noteId]?.call();
 
     getMidiWildcards(note, channel, input.id).forEach(wildcard => {
       playingNotes.add(wildcard);
@@ -631,6 +633,13 @@
 
   // @ts-check
 
+  const onnote = (note, channel, input, event) => {
+    const noteId = getNoteId(note, channel, input);
+    state.noteOnEvents[noteId] = event;
+  };
+
+  // @ts-check
+
   /**
    * Channel is chainable to `midi` and `input()` and provides a channel for all
    * the functions that are chained to it.
@@ -645,7 +654,10 @@
       note(_note, _channel ?? channel, _input ?? input),
 
     cc: (_index, _channel, _input) =>
-      cc(_index, _channel ?? channel, _input ?? input)
+      cc(_index, _channel ?? channel, _input ?? input),
+
+    onnote: (_note, _event) =>
+      onnote(_note, channel, input, _event)
   });
 
   // @ts-check
@@ -661,6 +673,7 @@
   const input = input => ({
     note: (_note, _channel, _input) => note(_note, _channel, _input ?? input),
     cc: (_index, _channel, _input) => cc(_index, _channel, _input ?? input),
+    onnote: (_note, _event) => onnote(_note, '*', input, _event),
     channel: _channel => channel(_channel, input)
   });
 
