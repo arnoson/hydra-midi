@@ -4,7 +4,8 @@ A utility script for using midi with https://hydra.ojack.xyz.
 
 ## Important
 
-Showing the GUI (`midi.show()`) is only working when you re-run the script, should be fixed soon.
+* Showing the GUI (`midi.show()`) is only working when you re-run the script, should be fixed soon.
+* This extension uses C3 as middle C (midi note 60).
 
 ## Usage
 
