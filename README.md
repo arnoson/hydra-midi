@@ -181,7 +181,7 @@ cc(
 )
 ```
 
-### .onNote() `since v0.1.0`
+### .onNote()
 
 You can define an event to trigger when a particular note is played on a specific input or channel:
 
