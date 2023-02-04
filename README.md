@@ -174,6 +174,18 @@ cc(
 )
 ```
 
+### .onNote()
+
+You can define an event to trigger when a particular note is played on a specific input or channel:
+
+```js
+myController = midi.input(3).channel(15)
+
+myController.onNote('c1', () => {
+  osc().out()
+})
+```
+
 ### Transforms
 
 Values from `note()`, `cc()` and `adsr()` can be transformed using the following functions:
