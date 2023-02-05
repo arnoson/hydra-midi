@@ -2,8 +2,8 @@ export default {
   /** @type {Record<string, number>} */
   ccValues: {},
 
-  /** @type {Set<string>} */
-  playingNotes: new Set(),
+  /** @type {Map<string, number>} */
+  playingNotes: new Map(),
 
   /** @type {Record<string, function>} */
   noteOnEvents: {},

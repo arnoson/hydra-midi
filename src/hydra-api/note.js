@@ -2,7 +2,7 @@
 
 import { chainable } from '../utils'
 import state from '../state'
-import { scale, range, value, adsr } from '../transforms'
+import { scale, range, value, adsr, velocity } from '../transforms'
 import { getMidiId, resolveNote, resolveInput } from '../midiAccess'
 
 const noteIsPlaying = noteId => state.playingNotes.has(noteId)
@@ -24,7 +24,7 @@ export const getNoteId = (note, channel, input) =>
  * @returns
  */
 export const _note = (note, channel, input) =>
-  noteIsPlaying(getNoteId(note, channel, input)) ? 1 : 0
+  chainable(noteIsPlaying(getNoteId(note, channel, input)) ? 1 : 0, { velocity: velocity(noteId) })
 
 /**
  * Create a chainable function that returns 1 if the specified note is playing,
@@ -38,5 +38,5 @@ export const _note = (note, channel, input) =>
 export const note = (note, channel, input) => {
   const noteId = getNoteId(note, channel, input)
   const fn = () => (noteIsPlaying(noteId) ? 1 : 0)
-  return chainable(fn, { scale, range, value, adsr: adsr(noteId) })
+  return chainable(fn, { scale, range, value, adsr: adsr(noteId), velocity: velocity(noteId) })
 }
