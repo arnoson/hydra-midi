@@ -166,6 +166,14 @@ Trigger an envelope each time a note is played. `adsr()`can only be used togethe
 note('C3').adsr(attack, decay, sustain, release)
 ```
 
+### velocity()
+
+Retrieves the latest velocity played for a the note that calls it, in a range from 0 to 1.
+
+```js
+note('C3').velocity()
+```
+
 ### cc()
 
 Listen to (normalized) CC values.
@@ -211,7 +219,7 @@ cc(40).scale(3)
 Map the value to a different range.
 
 ```js
-cc(41).range(-0.5, 0.5)
+cc(41).velocity().range(-0.5, 0.5)
 ```
 
 #### value()
