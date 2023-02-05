@@ -4,16 +4,14 @@ A utility script for using midi with https://hydra.ojack.xyz.
 
 ## Important
 
-- Showing the GUI (`midi.show()`) is only working when you re-run the script, should be fixed soon.
 - This extension uses C3 as middle C (midi note 60).
 
 ## Usage
 
-Visit https://hydra.ojack.xyz. The Hydra Midi Extension will get activated automatically.
-
 Start (and optionally show) midi and use midi inputs as parameters for hydra:
 
 ```js
+// You can either use `@latest` or load a specific version with, for example, `@0.2.0`.
 await loadScript(
   'https://cdn.jsdelivr.net/gh/arnoson/hydra-midi@latest/dist/index.js'
 )
