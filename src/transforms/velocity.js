@@ -3,6 +3,7 @@
 import { chainable } from '../utils'
 import { range } from './range'
 import { scale } from './scale'
+import { value } from './value'
 import state from '../state'
 
 /**
@@ -17,4 +18,4 @@ const getNoteVelocity = noteId => state.playingNotes.get(noteId) ?? 0
  * @param {string} noteId
  */
 export const velocity = noteId => () => () =>
-  chainable(() => getNoteVelocity(noteId) / 127, { scale, range })
+  chainable(() => getNoteVelocity(noteId) / 127, { scale, range, value })

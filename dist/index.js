@@ -709,7 +709,7 @@
    * @param {string} noteId
    */
   const velocity = noteId => () => () =>
-    chainable(() => getNoteVelocity(noteId) / 127, { scale, range });
+    chainable(() => getNoteVelocity(noteId) / 127, { scale, range, value });
 
   // @ts-check
 
