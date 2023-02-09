@@ -1,5 +1,6 @@
 {
   "type": "module",
+  "main": "dist/index.js",
   "scripts": {
     "cleanup": "shx rm -rf ./dist",
     "build": "npm run cleanup && rollup -c",
