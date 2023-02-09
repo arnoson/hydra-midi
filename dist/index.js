@@ -363,14 +363,13 @@
   // @ts-check
 
   /** @type {HTMLElement|null} */
-  let gui;
+  let gui = document.querySelector('.hydra-midi-gui');
   /** @type {HTMLElement|null} */
-  let inputs;
+  let inputs = gui?.querySelector('.hydra-midi-inputs');
   /** @type {HTMLElement|null} */
-  let messages;
+  let messages = gui?.querySelector('.hydra-midi-inputs');
 
   const maxMessages = 10;
-  let isSetup = false;
   let isEnabled = false;
 
   const setup = () => {
@@ -392,16 +391,13 @@
     document.body.append(gui);
     inputs = gui.querySelector('.hydra-midi-inputs');
     messages = gui.querySelector('.hydra-midi-messages');
-
-    isSetup = true;
-    isEnabled = true;
   };
 
   /**
    * Show the gui and set it up if necessary.
    */
   const show = () => {
-    if (!isSetup) setup();
+    if (!gui) setup();
     gui.hidden = false;
     isEnabled = true;
   };
