@@ -14,5 +14,5 @@ export default defineConfig({
     format: 'iife',
     file: 'dist/index.js',
   },
-  plugins: [nodeResolve(), string({ include: '**/*.css' })],
+  plugins: [nodeResolve(), terser(), string({ include: '**/*.css' })],
 })
