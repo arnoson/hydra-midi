@@ -1,6 +1,17 @@
+const ccValues = JSON.parse(
+  sessionStorage.getItem('hydra-midi_ccValues') || '{}'
+)
+
+const ccValuesHandler = {
+  set() {
+    sessionStorage.setItem('hydra-midi_ccValues', JSON.stringify(ccValues))
+    return Reflect.set(...arguments)
+  },
+}
+
 export default {
   /** @type {Record<string, number>} */
-  ccValues: {},
+  ccValues: new Proxy(ccValues, ccValuesHandler),
 
   /** @type {Map<string, number>} */
   playingNotes: new Map(),
