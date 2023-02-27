@@ -3,8 +3,9 @@
 import state from './state'
 import { envelopes } from './transforms/adsr'
 import { MidiAccess } from './lib/MidiAccess'
-import { logMidiMessage, showInputs } from './gui'
+import { logMidiMessage } from './gui'
 import { getNoteNumber } from './utils'
+import { ChannelArg, InputArg, NoteArg, NoteId } from './types'
 
 // Those properties will never change, only their content, so it's save to
 // destructure.
@@ -16,40 +17,38 @@ export const midiAccess = new MidiAccess()
 /**
  * Get an id for a midi message using an osc style address.
  * @example getMidiId(60, 0, 1) // -> '60/0/1'
- * @param {number|string} value
- * @param {number|string} channel
- * @param {number|string} input
  * @returns
  */
-export const getMidiId = (value, channel, input) => {
-  if (input !== undefined) {
-    return `${value}/${channel}/${input ?? midiAccess.getInputId(0)}`
-  }
-}
+export const getMidiId = (
+  note: NoteArg = '*',
+  channel: ChannelArg = '*',
+  input: InputArg = '*'
+): NoteId => `${note}/${channel}/${input}`
 
 /**
  * Get all possible wildcard combinations for a midi id ({@link getMidiId}).
  * If we have an id for a midi note like this: '60/0/1' we could use the
  * wildcard '60/0/*' (Note 60 on channel 0 on any input).
- * @param {number} value
- * @param {number} channel
- * @param {string} input
- * @returns
  */
-export const getMidiWildcards = (value, channel, input) => [
+export const getMidiWildcards = (
+  note: number,
+  channel: number,
+  input: string
+) => [
   getMidiId('*', '*', '*'),
-  getMidiId(value, '*', '*'),
+  getMidiId(note, '*', '*'),
   getMidiId('*', channel, '*'),
   getMidiId('*', '*', input),
-  getMidiId(value, channel, '*'),
+  getMidiId(note, channel, '*'),
   getMidiId('*', channel, input),
-  getMidiId(value, '*', input)
+  getMidiId(note, '*', input),
 ]
 
-export const resolveInput = input =>
+export const resolveInput = (input: InputArg) =>
   input === '*' ? '*' : midiAccess.getInputId(input)
 
-export const resolveNote = note => (note === '*' ? note : getNoteNumber(note))
+export const resolveNote = (note: NoteArg) =>
+  note === '*' ? note : getNoteNumber(note)
 
 /**
  * For all received midi values we not only save the value for the exact midi id
@@ -81,13 +80,13 @@ midiAccess.on(MidiAccess.TypeNoteOn, ({ data, channel, input }) => {
   const [note, velocity] = data
   const noteId = getMidiId(note, channel, input.id)
   playingNotes.set(noteId, velocity)
-  envelopes[noteId]?.trigger()
-  noteOnEvents[noteId]?.call()
+  envelopes.get(noteId)?.trigger()
+  noteOnEvents[noteId]?.()
 
   getMidiWildcards(note, channel, input.id).forEach(wildcard => {
     playingNotes.set(wildcard, velocity)
-    envelopes[wildcard]?.trigger()
-    noteOnEvents[wildcard]?.call()
+    envelopes.get(wildcard)?.trigger()
+    noteOnEvents[wildcard]?.call(null)
   })
 
   logMidiMessage({ input, type: 'on', channel, data })
@@ -97,11 +96,11 @@ midiAccess.on(MidiAccess.TypeNoteOff, ({ data, channel, input }) => {
   const [note] = data
   const noteId = getMidiId(note, channel, input.id)
   playingNotes.delete(noteId)
-  envelopes[noteId]?.stop()
+  envelopes.get(noteId)?.stop()
 
   getMidiWildcards(note, channel, input.id).forEach(wildcard => {
     playingNotes.delete(wildcard)
-    envelopes[wildcard]?.stop()
+    envelopes.get(wildcard)?.stop()
   })
 
   logMidiMessage({ input, type: 'off', channel, data })

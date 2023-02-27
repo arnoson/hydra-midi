@@ -1,20 +1,17 @@
-// @ts-check
-
 import { midiAccess } from '../midiAccess'
 import { channel, input } from '../transforms'
 import { show, hide, showInputs } from '../gui'
 import state from '../state'
+import { Defaults } from '../types'
 
-const start = defaults => {
+const start = (defaults: Defaults) => {
   state.defaults = { ...state.initialDefaults, ...defaults }
 
-  midiAccess
-    .start()
-    .then(() =>
-      midiAccess.access.addEventListener('statechange', () =>
-        showInputs(midiAccess.access.inputs)
-      )
-    )
+  midiAccess.start().then(() =>
+    midiAccess.access?.addEventListener('statechange', () => {
+      if (midiAccess.access) showInputs(midiAccess.access.inputs)
+    })
+  )
 
   // Allow `midi.start().show()` chaining.
   return { show }

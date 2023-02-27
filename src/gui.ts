@@ -1,14 +1,10 @@
-// @ts-check
-
 // @ts-ignore
 import css from './index.css'
+import { MidiMessageType } from './types'
 
-/** @type {HTMLElement|null} */
-let gui = document.querySelector('.hydra-midi-gui')
-/** @type {HTMLElement|null} */
-let inputs = gui?.querySelector('.hydra-midi-inputs')
-/** @type {HTMLElement|null} */
-let messages = gui?.querySelector('.hydra-midi-inputs')
+let gui = document.querySelector<HTMLElement>('.hydra-midi-gui')
+let inputs = gui?.querySelector<HTMLElement>('.hydra-midi-inputs') ?? null
+let messages = gui?.querySelector<HTMLElement>('.hydra-midi-inputs') ?? null
 
 const maxMessages = 10
 let isEnabled = false
@@ -30,8 +26,8 @@ const setup = () => {
     `
 
   document.body.append(gui)
-  inputs = gui.querySelector('.hydra-midi-inputs')
-  messages = gui.querySelector('.hydra-midi-messages')
+  inputs = gui.querySelector<HTMLElement>('.hydra-midi-inputs')
+  messages = gui.querySelector<HTMLElement>('.hydra-midi-messages')
 }
 
 /**
@@ -39,7 +35,7 @@ const setup = () => {
  */
 export const show = () => {
   if (!gui) setup()
-  gui.hidden = false
+  if (gui) gui.hidden = false
   isEnabled = true
 }
 
@@ -47,7 +43,7 @@ export const show = () => {
  * Hide the gui.
  */
 export const hide = () => {
-  gui.hidden = true
+  if (gui) gui.hidden = true
   isEnabled = false
 }
 
@@ -55,32 +51,32 @@ export const hide = () => {
  * Render a list of all open midi inputs.
  * @param {WebMidi.MIDIInputMap} list
  */
-export const showInputs = list => {
+export const showInputs = (list: WebMidi.MIDIInputMap) => {
   if (!isEnabled) return
 
-  const getInputName = input => input.name ?? input.id ?? 'n/a'
-  const template = (input, index) =>
+  const getInputName = (input: WebMidi.MIDIInput) =>
+    input.name ?? input.id ?? 'n/a'
+  const template = (input: WebMidi.MIDIInput, index: number) =>
     `<div class="hydra-midi-input" style="color: var(--color-${input.id})">` +
     `#${index} ` +
     `<span class="hydra-midi-input-name">${getInputName(input)}</span>` +
     `</div>`
 
-  inputs.innerHTML = [...list.values()].map(template).join('')
+  if (inputs) inputs.innerHTML = [...list.values()].map(template).join('')
 }
 
 /**
  * Log a midi message and highlight the corresponding input.
- * @param {{
- *  input: WebMidi.MIDIInput,
- *  channel: number,
- *  type: string,
- *  data: number[]
- * }} message
  */
-export const logMidiMessage = message => {
-  if (!isEnabled) return
+export const logMidiMessage = (message: {
+  input: WebMidi.MIDIInput
+  channel: number
+  type: MidiMessageType
+  data: number[]
+}) => {
+  if (!isEnabled || !messages) return
 
-  const pad = (value, length = 3) => String(value).padEnd(length, ' ')
+  const pad = (value: any, length = 3) => String(value).padEnd(length, ' ')
 
   const { input } = message
   const channel = pad(message.channel, 2)
@@ -88,7 +84,7 @@ export const logMidiMessage = message => {
   const data1 = pad(message.data[0])
   const data2 = message.data[1] ? pad(message.data[1]) : ''
 
-  messages.removeChild(messages.firstChild)
+  if (messages.firstChild) messages.removeChild(messages.firstChild)
   const el = document.createElement('div')
   el.style.color = `var(--color-midi-${type})`
   el.innerHTML = [channel, type, data1, data2].join(' ')
@@ -97,20 +93,21 @@ export const logMidiMessage = message => {
   highlightInput(input, message.type)
 }
 
-const highlightTimeouts = {}
+const highlightTimeouts = new Map<string, number>()
 /**
  * Let the input flash for a short moment in the color of the received midi
  * message.
- * @param {*} input
- * @param {*} type
  */
-const highlightInput = (input, type) => {
-  clearTimeout(highlightTimeouts[input.id])
+const highlightInput = (input: WebMidi.MIDIInput, type: MidiMessageType) => {
+  if (!gui) return
+
+  clearTimeout(highlightTimeouts.get(input.id))
 
   const inputColorVariable = `--color-${input.id}`
   gui.style.setProperty(inputColorVariable, `var(--color-midi-${type})`)
 
-  highlightTimeouts[input.id] = setTimeout(() => {
-    gui.style.setProperty(inputColorVariable, null)
-  }, 100)
+  highlightTimeouts.set(
+    input.id,
+    setTimeout(() => gui?.style.setProperty(inputColorVariable, null), 100)
+  )
 }
