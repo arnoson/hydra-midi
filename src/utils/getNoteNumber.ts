@@ -16,7 +16,7 @@ export const getNoteNumber = (note: string | number): number | undefined => {
   const octave = parseInt(note.slice(-1))
 
   const offset = noteOffsets[name]
-  if (!offset) {
+  if (offset === undefined) {
     console.warn(`Note '${note}' not recognized`)
     return
   }
