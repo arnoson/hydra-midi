@@ -1,16 +1,18 @@
-// @ts-check
-
 import { linearRamp } from '../utils'
 
 export class Envelope {
   active = false
   noteOn = false
-  /** @type {number|null} */
-  gateDuration = null
-  /** @type {number|null} */
-  startTime = null
 
-  constructor({ a, d, s, r }) {
+  gateDuration?: number
+  startTime?: number
+
+  a: number
+  d: number
+  s: number
+  r: number
+
+  constructor({ a, d, s, r }: { a: number; d: number; s: number; r: number }) {
     this.a = a
     this.d = d
     this.s = s
@@ -18,8 +20,8 @@ export class Envelope {
   }
 
   trigger() {
-    this.startTime = null
-    this.gateDuration = null
+    this.startTime = undefined
+    this.gateDuration = undefined
     this.noteOn = true
     this.active = true
   }
@@ -28,11 +30,7 @@ export class Envelope {
     this.noteOn = false
   }
 
-  /**
-   * @param {number} time
-   * @returns {number}
-   */
-  value(time) {
+  value(time: number): number {
     if (!this.active) return 0
 
     this.startTime ??= time

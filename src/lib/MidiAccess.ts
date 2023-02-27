@@ -1,11 +1,15 @@
-// @ts-check
-
 import { SimpleEventEmitter } from './SimpleEventEmitter'
+
+interface MidiMessagePayload {
+  data: [data1: number, data2: number]
+  channel: number
+  input: WebMidi.MIDIInput
+}
 
 /**
  * A thin wrapper around Web Midi.
  */
-export class MidiAccess extends SimpleEventEmitter {
+export class MidiAccess extends SimpleEventEmitter<number, MidiMessagePayload> {
   static TypeNoteOff = 0x80
   static TypeNoteOn = 0x90
   static TypeAfterTouchPoly = 0xa0
@@ -27,14 +31,11 @@ export class MidiAccess extends SimpleEventEmitter {
 
   enabled = false
   isSetup = false
-  /** @type {WebMidi.MIDIAccess} */
-  access = null
+  access: WebMidi.MIDIAccess | undefined
 
-  /**
-   * @param {WebMidi.MIDIMessageEvent} message
-   * @returns
-   */
-  static parseMessage(message) {
+  static parseMessage(
+    message: WebMidi.MIDIMessageEvent
+  ): { type: number } & Omit<MidiMessagePayload, 'input'> {
     const [status, data1, data2] = message.data
     const type = status & 0xf0
     const channel = status & 0x0f
@@ -51,10 +52,11 @@ export class MidiAccess extends SimpleEventEmitter {
 
     this.access.addEventListener('statechange', ({ port }) => {
       if (port.state === 'connected') {
-        const input = this.access.inputs.get(port.id)
+        const input = this.access?.inputs.get(port.id)
         input?.addEventListener('midimessage', handleMessage)
       }
     })
+
     this.isSetup = true
   }
 
@@ -67,23 +69,18 @@ export class MidiAccess extends SimpleEventEmitter {
     this.enabled = false
   }
 
-  getInputByIndex(index) {
+  getInputByIndex(index: number) {
     return this.access && [...this.access.inputs.values()][index]
   }
 
-  getInputByName(name) {
+  getInputByName(name: string) {
     return (
       this.access &&
       [...this.access.inputs.values()].find(input => input.name === name)
     )
   }
 
-  /**
-   * Get a midi input's id by index or name.
-   * @param {number|string} indexOrName
-   * @returns {string}
-   */
-  getInputId(indexOrName) {
+  getInputId(indexOrName: number | string): string | undefined {
     const input =
       typeof indexOrName === 'number'
         ? this.getInputByIndex(indexOrName)
@@ -92,10 +89,11 @@ export class MidiAccess extends SimpleEventEmitter {
     return input?.id
   }
 
-  handleMessage(message) {
+  handleMessage(message: WebMidi.MIDIMessageEvent) {
     if (this.enabled) {
       const { type, data, channel } = MidiAccess.parseMessage(message)
-      this.emit(type, { data, channel, input: message.target })
+      const input = message.target as WebMidi.MIDIInput
+      this.emit(type, { data, channel, input })
     }
   }
 }
