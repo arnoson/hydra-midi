@@ -21,5 +21,5 @@ export const getNoteNumber = (note: string | number): number | undefined => {
     return
   }
 
-  return offset + (octave + 2) * 12
+  return offset + (octave + 1) * 12
 }

@@ -2,10 +2,6 @@
 
 A utility script for using midi with https://hydra.ojack.xyz.
 
-## Important
-
-- This extension uses C3 as middle C (midi note 60).
-
 ## Usage
 
 Start (and optionally show) midi and use midi inputs as parameters for hydra:
