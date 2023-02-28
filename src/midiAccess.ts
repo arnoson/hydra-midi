@@ -1,5 +1,3 @@
-// @ts-check
-
 import state from './state'
 import { envelopes } from './transforms/adsr'
 import { MidiAccess } from './lib/MidiAccess'
@@ -60,7 +58,7 @@ export const resolveNote = (note: NoteArg) =>
  * This might seem a little verbose but this way we can easily poll for values
  * without having to do any additional logic.
  * Listening to CC 74 on channel 0 on any input in hydra: `cc(74, 0, '*')` will
- * internally just look up `ccValues['74/0/*']`, which is super fast.
+ * internally just look up `ccValues.get('74/0/*')`, which is super fast.
  */
 
 midiAccess.on(MidiAccess.TypeControlChange, ({ data, channel, input }) => {
@@ -68,9 +66,9 @@ midiAccess.on(MidiAccess.TypeControlChange, ({ data, channel, input }) => {
   const ccId = getMidiId(index, channel, input.id)
   const normalizedValue = value / 127
 
-  ccValues[ccId] = normalizedValue
-  getMidiWildcards(index, channel, input.id).forEach(
-    wildcard => (ccValues[wildcard] = normalizedValue)
+  ccValues.set(ccId, normalizedValue)
+  getMidiWildcards(index, channel, input.id).forEach(wildcard =>
+    ccValues.set(wildcard, normalizedValue)
   )
 
   logMidiMessage({ input, type: 'cc', channel, data })
@@ -81,12 +79,12 @@ midiAccess.on(MidiAccess.TypeNoteOn, ({ data, channel, input }) => {
   const noteId = getMidiId(note, channel, input.id)
   playingNotes.set(noteId, velocity)
   envelopes.get(noteId)?.trigger()
-  noteOnEvents[noteId]?.()
+  noteOnEvents.get(noteId)?.()
 
   getMidiWildcards(note, channel, input.id).forEach(wildcard => {
     playingNotes.set(wildcard, velocity)
     envelopes.get(wildcard)?.trigger()
-    noteOnEvents[wildcard]?.call(null)
+    noteOnEvents.get(wildcard)?.()
   })
 
   logMidiMessage({ input, type: 'on', channel, data })

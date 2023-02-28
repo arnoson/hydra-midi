@@ -21,7 +21,7 @@ export const _cc = (
   index: IndexArg = '*',
   channel: ChannelArg = '*',
   input: InputArg = '*'
-) => state.ccValues[getCcId(index, channel, input)] ?? 0
+) => state.ccValues.get(getCcId(index, channel, input)) ?? 0
 
 /**
  * Generate a chainable function that returns the value for the specified CC
@@ -34,6 +34,6 @@ export const cc = (
   input: InputArg = '*'
 ) => {
   const ccId = getCcId(index, channel, input)
-  const fn = () => state.ccValues[ccId] ?? 0
+  const fn = () => state.ccValues.get(ccId) ?? 0
   return chainable(fn, { scale, range, value })
 }

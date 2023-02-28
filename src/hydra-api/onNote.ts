@@ -9,5 +9,5 @@ export const onNote = (
   event: Function
 ) => {
   const noteId = getNoteId(note, channel, input)
-  state.noteOnEvents[noteId] = event
+  state.noteOnEvents.set(noteId, event)
 }

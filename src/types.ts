@@ -1,4 +1,4 @@
-export type CCValues = Record<string, number>
+export type CCValues = Map<string, number>
 
 export type MidiMessageType = 'cc' | 'on' | 'off' | 'bend' | 'aft'
 
