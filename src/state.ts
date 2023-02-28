@@ -7,8 +7,9 @@ const ccValues: CCValues = new Map(
 // Monkey-patch `ccValues.set` to make a kind of proxy.
 const { set } = ccValues
 ccValues.set = function (key: string, value: number) {
+  const result = set.apply(this, [key, value])
   sessionStorage.setItem('hydra-midi_ccValues', JSON.stringify([...ccValues]))
-  return set.apply(this, [key, value])
+  return result
 }
 
 export default {
