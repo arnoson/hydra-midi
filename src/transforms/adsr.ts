@@ -17,9 +17,7 @@ export const adsr =
   () =>
   (a: number, d: number, s: number, r: number) => {
     // Perform a deep merge with the adsr defaults.
-    ;[a, d, s, r] = [a, d, s, r].map(
-      (arg, i) => arg ?? state.defaults.adsr[i] ?? state.initialDefaults.adsr[i]
-    )
+    ;[a, d, s, r] = [a, d, s, r].map((arg, i) => arg ?? state.defaults.adsr[i])
 
     const envelope = new Envelope({ a, d, s, r })
     envelopes.set(noteId, envelope)
