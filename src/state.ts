@@ -4,15 +4,15 @@ const ccValues: CCValues = new Map(
   JSON.parse(sessionStorage.getItem('hydra-midi_ccValues') || '[]')
 )
 
-const ccValuesHandler: ProxyHandler<CCValues> = {
-  set(...args) {
-    sessionStorage.setItem('hydra-midi_ccValues', JSON.stringify([...ccValues]))
-    return Reflect.set(...args)
-  },
+// Monkey-patch `ccValues.set` to make a kind of proxy.
+const { set } = ccValues
+ccValues.set = function (key: string, value: number) {
+  sessionStorage.setItem('hydra-midi_ccValues', JSON.stringify([...ccValues]))
+  return set.apply(this, [key, value])
 }
 
 export default {
-  ccValues: new Proxy<CCValues>(ccValues, ccValuesHandler),
+  ccValues,
 
   playingNotes: new Map<string, number>(),
 
