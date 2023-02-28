@@ -19,15 +19,9 @@ export default {
 
   noteOnEvents: new Map<string, Function>(),
 
-  initialDefaults: {
-    channel: 0,
-    input: 0,
-    adsr: [100, 100, 1, 100],
-  } as Defaults,
-
   defaults: {
-    channel: 0,
-    input: 0,
+    channel: '*',
+    input: '*',
     adsr: [100, 100, 1, 100],
   } as Defaults,
 }
