@@ -7,13 +7,11 @@ A utility script for using midi with https://hydra.ojack.xyz.
 Start (and optionally show) midi and use midi inputs as parameters for hydra:
 
 ```js
-// You can either use `@latest` or load a specific version with, for example, `@0.2.0`.
-await loadScript(
-  'https://cdn.jsdelivr.net/gh/arnoson/hydra-midi@latest/dist/index.js'
-)
+// You can either use `@latest` or load a specific version with, for example, `@0.4.0`.
+await loadScript('https://cdn.jsdelivr.net/npm/hydra-midi@latest/dist/index.js')
 
 // Use midi messages from all channels of all inputs.
-midi.start({ channel: '*', input: '*' })
+await midi.start({ channel: '*', input: '*' })
 // Show a small midi monitor (similar to hydra's `a.show()`).
 midi.show()
 
@@ -25,37 +23,46 @@ solid(note('*'), 0, 1).out()
 // solid(cc(74), 0, 1).out()
 ```
 
-[Edit on hydra](https://hydra.ojack.xyz/?code=YXdhaXQlMjBsb2FkU2NyaXB0KCUyMmh0dHBzJTNBJTJGJTJGY2RuLmpzZGVsaXZyLm5ldCUyRmdoJTJGYXJub3NvbiUyRmh5ZHJhLW1pZGklMkZkaXN0JTJGaW5kZXguanMlMjIpJTBBJTBBJTJGJTJGJTIwVXNlJTIwbWlkaSUyMG1lc3NhZ2VzJTIwZnJvbSUyMGFsbCUyMGNoYW5uZWxzJTIwb2YlMjBhbGwlMjBpbnB1dHMuJTBBbWlkaS5zdGFydCglN0IlMjBjaGFubmVsJTIwJTNBJTIwJyonJTJDJTIwaW5wdXQlM0ElMjAnKiclMjAlN0QpJTBBJTJGJTJGJTIwU2hvdyUyMGElMjBzbWFsbCUyMG1pZGklMjBtb25pdG9yJTIwKHNpbWlsYXIlMjB0byUyMGh5ZHJhJ3MlMjAlNjBhLnNob3coKSU2MCkuJTBBbWlkaS5zaG93KCklMEElMEElMkYlMkYlMjBVc2UlMjBhbnklMjBub3RlJTIwdG8lMjBjb250cm9sJTIwdGhlJTIwcmVkJTIwYW1vdW50JTIwb2YlMjBoeWRyYSdzJTIwJTYwc29saWQoKSU2MCUyMGZ1bmN0aW9uLiUwQXNvbGlkKG5vdGUoJyonKSUyQyUyMDAlMkMlMjAxKS5vdXQoKSUwQSUwQSUyRiUyRiUyME9yJTJDJTIwaWYlMjB5b3UlMjBhcmUlMjB1c2luZyUyMGElMjBtaWRpJTIwY29udHJvbGxlciUyMGFuZCUyMG5vdCUyMGElMjBrZXlib2FyZCUzQSUwQSUyRiUyRiUyMFVzZSUyMGElMjBjb250cm9sJTIwY2hhbmdlJTIwdmFsdWUlMjB0byUyMGNvbnRyb2wlMjB0aGUlMjByZWQlMjBhbW91bnQuJTBBJTJGJTJGJTIwc29saWQoY2MoNzQpJTJDJTIwMCUyQyUyMDEpLm91dCgp)
+[Edit on hydra](https://hydra.ojack.xyz/?code=JTJGJTJGJTIwWW91JTIwY2FuJTIwZWl0aGVyJTIwdXNlJTIwJTYwJTQwbGF0ZXN0JTYwJTIwb3IlMjBsb2FkJTIwYSUyMHNwZWNpZmljJTIwdmVyc2lvbiUyMHdpdGglMkMlMjBmb3IlMjBleGFtcGxlJTJDJTIwJTYwJTQwMC40LjAlNjAuJTBBYXdhaXQlMjBsb2FkU2NyaXB0KCUwQSUyMCUyMCdodHRwcyUzQSUyRiUyRmNkbi5qc2RlbGl2ci5uZXQlMkZucG0lMkZoeWRyYS1taWRpJTQwbGF0ZXN0JTJGZGlzdCUyRmluZGV4LmpzJyUwQSklMEElMEElMkYlMkYlMjBVc2UlMjBtaWRpJTIwbWVzc2FnZXMlMjBmcm9tJTIwYWxsJTIwY2hhbm5lbHMlMjBvZiUyMGFsbCUyMGlucHV0cy4lMEFhd2FpdCUyMG1pZGkuc3RhcnQoJTdCJTIwY2hhbm5lbCUzQSUyMCcqJyUyQyUyMGlucHV0JTNBJTIwJyonJTIwJTdEKSUwQSUyRiUyRiUyMFNob3clMjBhJTIwc21hbGwlMjBtaWRpJTIwbW9uaXRvciUyMChzaW1pbGFyJTIwdG8lMjBoeWRyYSdzJTIwJTYwYS5zaG93KCklNjApLiUwQW1pZGkuc2hvdygpJTBBJTBBJTJGJTJGJTIwVXNlJTIwYW55JTIwbm90ZSUyMHRvJTIwY29udHJvbCUyMHRoZSUyMHJlZCUyMGFtb3VudCUyMG9mJTIwaHlkcmEncyUyMCU2MHNvbGlkKCklNjAlMjBmdW5jdGlvbi4lMEFzb2xpZChub3RlKCcqJyklMkMlMjAwJTJDJTIwMSkub3V0KCklMEElMEElMkYlMkYlMjBPciUyQyUyMGlmJTIweW91JTIwYXJlJTIwdXNpbmclMjBhJTIwbWlkaSUyMGNvbnRyb2xsZXIlMjBhbmQlMjBub3QlMjBhJTIwa2V5Ym9hcmQlM0ElMEElMkYlMkYlMjBVc2UlMjBhJTIwY29udHJvbCUyMGNoYW5nZSUyMHZhbHVlJTIwdG8lMjBjb250cm9sJTIwdGhlJTIwcmVkJTIwYW1vdW50LiUwQSUyRiUyRiUyMHNvbGlkKGNjKDc0KSUyQyUyMDAlMkMlMjAxKS5vdXQoKQ%3D%3D)
+
+## CDN
+
+All versions beginning from `0.4.0` can be loaded from npm:
+
+```
+https://cdn.jsdelivr.net/npm/hydra-midi@latest/dist/index.js
+```
+
+all previous versions are available directly from github:
+
+```
+https://cdn.jsdelivr.net/gh/arnoson/hydra-midi@0.3.1/dist/index.js
+
+```
 
 ## Examples
 
 ### Use an envelope and scale it
 
 ```js
-await loadScript(
-  'https://cdn.jsdelivr.net/gh/arnoson/hydra-midi@latest/dist/index.js'
-)
+await loadScript('https://cdn.jsdelivr.net/npm/hydra-midi@latest/dist/index.js')
 
 // Use midi messages from all channels of all inputs.
-midi.start({ input: '*', channel: '*' })
-midi.show()
+await midi.start({ input: '*', channel: '*' }).show()
 
 // Trigger an ADSR envelope each time the note C3 is played and scale
 // the value to a range between 20 and 50.
 osc(note('C3').adsr(300, 200, 1, 300).range(20, 50), 0, 0).out()
 ```
 
-[Edit on hydra](https://hydra.ojack.xyz/?code=YXdhaXQlMjBsb2FkU2NyaXB0KCUyMmh0dHBzJTNBJTJGJTJGY2RuLmpzZGVsaXZyLm5ldCUyRmdoJTJGYXJub3NvbiUyRmh5ZHJhLW1pZGklMkZkaXN0JTJGaW5kZXguanMlMjIpJTBBJTBBJTJGJTJGJTIwVXNlJTIwbWlkaSUyMG1lc3NhZ2VzJTIwZnJvbSUyMGFsbCUyMGNoYW5uZWxzJTIwb2YlMjBhbGwlMjBpbnB1dHMuJTBBbWlkaS5zdGFydCglN0IlMjBpbnB1dCUzQSUyMCcqJyUyQyUyMGNoYW5uZWwlM0ElMjAnKiclMjAlN0QpJTBBbWlkaS5zaG93KCklMEElMEElMkYlMkYlMjBUcmlnZ2VyJTIwYW4lMjBBRFNSJTIwZW52ZWxvcGUlMjBlYWNoJTIwdGltZSUyMHRoZSUyMG5vdGUlMjBDMyUyMGlzJTIwcGxheWVkJTIwYW5kJTIwc2NhbGUlMEElMkYlMkYlMjB0aGUlMjB2YWx1ZSUyMHRvJTIwYSUyMHJhbmdlJTIwYmV0d2VlbiUyMDIwJTIwYW5kJTIwNTAuJTBBb3NjKCUwQSUyMCUyMG5vdGUoJ0MzJyklMEElMjAlMjAlMjAlMjAuYWRzcigzMDAlMkMlMjAyMDAlMkMlMjAxJTJDJTIwMzAwKSUwQSUyMCUyMCUyMCUyMC5yYW5nZSgyMCUyQyUyMDUwKSUyQyUwQSUyMCUyMDAlMkMlMEElMjAlMjAwJTBBKS5vdXQoKQ%3D%3D)
+[Edit on hydra](https://hydra.ojack.xyz/?code=YXdhaXQlMjBsb2FkU2NyaXB0KCUwQSUyMCUyMCdodHRwcyUzQSUyRiUyRmNkbi5qc2RlbGl2ci5uZXQlMkZucG0lMkZoeWRyYS1taWRpJTQwbGF0ZXN0JTJGZGlzdCUyRmluZGV4LmpzJyUwQSklMEElMEElMkYlMkYlMjBVc2UlMjBtaWRpJTIwbWVzc2FnZXMlMjBmcm9tJTIwYWxsJTIwY2hhbm5lbHMlMjBvZiUyMGFsbCUyMGlucHV0cy4lMEFhd2FpdCUyMG1pZGkuc3RhcnQoJTdCJTIwaW5wdXQlM0ElMjAnKiclMkMlMjBjaGFubmVsJTNBJTIwJyonJTIwJTdEKS5zaG93KCklMEElMEElMkYlMkYlMjBUcmlnZ2VyJTIwYW4lMjBBRFNSJTIwZW52ZWxvcGUlMjBlYWNoJTIwdGltZSUyMHRoZSUyMG5vdGUlMjBDMyUyMGlzJTIwcGxheWVkJTIwYW5kJTIwc2NhbGUlMEElMkYlMkYlMjB0aGUlMjB2YWx1ZSUyMHRvJTIwYSUyMHJhbmdlJTIwYmV0d2VlbiUyMDIwJTIwYW5kJTIwNTAuJTBBb3NjKG5vdGUoJ0MzJykuYWRzcigzMDAlMkMlMjAyMDAlMkMlMjAxJTJDJTIwMzAwKS5yYW5nZSgyMCUyQyUyMDUwKSUyQyUyMDAlMkMlMjAwKS5vdXQoKQ%3D%3D)
 
 ### Use multiple midi controllers
 
 ```js
-await loadScript(
-  'https://cdn.jsdelivr.net/gh/arnoson/hydra-midi@latest/dist/index.js'
-)
+await loadScript('https://cdn.jsdelivr.net/npm/hydra-midi@latest/dist/index.js')
 
-midi.start()
-midi.show()
+await midi.start().show()
 
 // Save input 0 (which in this is example could be a seaboard block) in a
 // variable. As the seaboard is an MPE-keyboard it makes sense to listen to all
@@ -77,25 +84,26 @@ noise(10, seaboard.cc(74))
   .out()
 ```
 
-[Edit on hydra](https://hydra.ojack.xyz/?code=YXdhaXQlMjBsb2FkU2NyaXB0KCUyMmh0dHBzJTNBJTJGJTJGY2RuLmpzZGVsaXZyLm5ldCUyRmdoJTJGYXJub3NvbiUyRmh5ZHJhLW1pZGklMkZkaXN0JTJGaW5kZXguanMlMjIpJTBBJTBBbWlkaS5zdGFydCgpJTBBbWlkaS5zaG93KCklMEElMEElMkYlMkYlMjBTYXZlJTIwaW5wdXQlMjAwJTIwKHdoaWNoJTIwaW4lMjB0aGlzJTIwaXMlMjBleGFtcGxlJTIwY291bGQlMjBiZSUyMGElMjBzZWFib2FyZCUyMGJsb2NrKSUyMGluJTIwYSUwQSUyRiUyRiUyMHZhcmlhYmxlLiUyMEFzJTIwdGhlJTIwc2VhYm9hcmQlMjBpcyUyMGFuJTIwTVBFLWtleWJvYXJkJTIwaXQlMjBtYWtlcyUyMHNlbnNlJTIwdG8lMjBsaXN0ZW4lMjB0byUyMGFsbCUwQSUyRiUyRiUyMGNoYW5uZWxzJTIwYnklMjBkZWZhdWx0LiUwQXNlYWJvYXJkJTIwJTNEJTIwbWlkaS5pbnB1dCgwKS5jaGFubmVsKCcqJyklMEElMEElMkYlMkYlMjBTYXZlJTIwaW5wdXQlMjAxJTIwKGZvciUyMGV4YW1wbGUlMjBhJTIwZmFkZXJmb3gpJTIwaW4lMjBhJTIwdmFyaWFibGUuJTIwV2UlMjBkb24ndCUyMHNwZWNpZnklMjB0aGUlMEElMkYlMkYlMjBjaGFubmVsJTIwc28lMjBpdCUyMGRlZmF1bHRzJTIwdG8lMjBjaGFubmVsJTIwMC4lMjBUbyUyMHVzZSUyMGFub3RoZXIlMjBjaGFubmVsJTIwd2UlMjBoYXZlJTIwdG8lMjBzZWxlY3QlMEElMkYlMkYlMjBpdCUyMGV4cGxpY2l0bHklMjBpbiUyMHRoZSUyMCU2MG5vdGUoKSU2MCUyMG9yJTIwJTYwY2MoKSU2MCUyMGZ1bmN0aW9ucy4lMEFmYWRlcmZveCUyMCUzRCUyMG1pZGkuaW5wdXQoMSklMEElMEElMkYlMkYlMjBNb2R1bGF0ZSUyMHRoZSUyMG5vaXNlJTIwc3BlZWQlMjB3aXRoJTIwdGhlJTIwc2VhYm9hcmQncyUyMENDNzQlMjB2YWx1ZXMlMjAob2YlMjBhbnklMjBjaGFubmVsKS4lMEFub2lzZSgxMCUyQyUyMHNlYWJvYXJkLmNjKDc0KSklMEElMjAlMjAlMkYlMkYlMjBVc2UlMjBhbnklMjBub3RlJTIwb24lMjB0aGUlMjBzZWFib2FyZCUyMHRvJTIwbW9kdWxhdGUlMjB0aGUlMjB0aHJlc2hvbGQuJTBBJTIwJTIwLnRocmVzaCglMEElMjAlMjAlMjAlMjBzZWFib2FyZCUwQSUyMCUyMCUyMCUyMCUyMCUyMC5ub3RlKCcqJyklMEElMjAlMjAlMjAlMjAlMjAlMjAuYWRzcigpJTBBJTIwJTIwJTIwJTIwJTIwJTIwLnNjYWxlKDAuNiklMkMlMEElMjAlMjAlMjAlMjAwLjElMEElMjAlMjApJTBBJTIwJTIwJTJGJTJGJTIwVXNlJTIwdGhlJTIwZmlyc3QlMjAzJTIwZmFkZXJzJTIwKHdoaWNoJTIwaGFwcGVuJTIwdG8lMjBiZSUyMENDNDAlRTIlODAlOTNDQzQyJTIwb24lMjBjaGFubmVsJTIwMTIpJTIwb2YlMjB0aGUlMEElMjAlMjAlMkYlMkYlMjBmYWRlcmZveCUyMHRvJTIwbWl4JTIwYSUyMGNvbG9yLiUwQSUyMCUyMC5jb2xvcihmYWRlcmZveC5jYyg0MCUyQyUyMDEyKSUyQyUyMGZhZGVyZm94LmNjKDQxJTJDJTIwMTIpJTJDJTIwZmFkZXJmb3guY2MoNDIlMkMlMjAxMikpJTBBJTIwJTIwLm91dCgp)
+[Edit on hydra](https://hydra.ojack.xyz/?code=YXdhaXQlMjBsb2FkU2NyaXB0KCUwQSUyMCUyMCdodHRwcyUzQSUyRiUyRmNkbi5qc2RlbGl2ci5uZXQlMkZucG0lMkZoeWRyYS1taWRpJTQwbGF0ZXN0JTJGZGlzdCUyRmluZGV4LmpzJyUwQSklMEElMEFhd2FpdCUyMG1pZGkuc3RhcnQoKS5zaG93KCklMEElMEElMkYlMkYlMjBTYXZlJTIwaW5wdXQlMjAwJTIwKHdoaWNoJTIwaW4lMjB0aGlzJTIwaXMlMjBleGFtcGxlJTIwY291bGQlMjBiZSUyMGElMjBzZWFib2FyZCUyMGJsb2NrKSUyMGluJTIwYSUwQSUyRiUyRiUyMHZhcmlhYmxlLiUyMEFzJTIwdGhlJTIwc2VhYm9hcmQlMjBpcyUyMGFuJTIwTVBFLWtleWJvYXJkJTIwaXQlMjBtYWtlcyUyMHNlbnNlJTIwdG8lMjBsaXN0ZW4lMjB0byUyMGFsbCUwQSUyRiUyRiUyMGNoYW5uZWxzJTIwYnklMjBkZWZhdWx0LiUwQXNlYWJvYXJkJTIwJTNEJTIwbWlkaS5pbnB1dCgwKS5jaGFubmVsKCcqJyklMEElMEElMkYlMkYlMjBTYXZlJTIwaW5wdXQlMjAxJTIwKGZvciUyMGV4YW1wbGUlMjBhJTIwZmFkZXJmb3gpJTIwaW4lMjBhJTIwdmFyaWFibGUuJTIwV2UlMjBkb24ndCUyMHNwZWNpZnklMjB0aGUlMEElMkYlMkYlMjBjaGFubmVsJTIwc28lMjBpdCUyMGRlZmF1bHRzJTIwdG8lMjBjaGFubmVsJTIwMC4lMjBUbyUyMHVzZSUyMGFub3RoZXIlMjBjaGFubmVsJTIwd2UlMjBoYXZlJTIwdG8lMjBzZWxlY3QlMEElMkYlMkYlMjBpdCUyMGV4cGxpY2l0bHklMjBpbiUyMHRoZSUyMCU2MG5vdGUoKSU2MCUyMG9yJTIwJTYwY2MoKSU2MCUyMGZ1bmN0aW9ucy4lMEFmYWRlcmZveCUyMCUzRCUyMG1pZGkuaW5wdXQoMSklMEElMEElMkYlMkYlMjBNb2R1bGF0ZSUyMHRoZSUyMG5vaXNlJTIwc3BlZWQlMjB3aXRoJTIwdGhlJTIwc2VhYm9hcmQncyUyMENDNzQlMjB2YWx1ZXMlMjAob2YlMjBhbnklMjBjaGFubmVsKS4lMEFub2lzZSgxMCUyQyUyMHNlYWJvYXJkLmNjKDc0KSklMEElMjAlMjAlMkYlMkYlMjBVc2UlMjBhbnklMjBub3RlJTIwb24lMjB0aGUlMjBzZWFib2FyZCUyMHRvJTIwbW9kdWxhdGUlMjB0aGUlMjB0aHJlc2hvbGQuJTBBJTIwJTIwLnRocmVzaChzZWFib2FyZC5ub3RlKCcqJykuYWRzcigpLnNjYWxlKDAuNiklMkMlMjAwLjEpJTBBJTIwJTIwJTJGJTJGJTIwVXNlJTIwdGhlJTIwZmlyc3QlMjAzJTIwZmFkZXJzJTIwKHdoaWNoJTIwaGFwcGVuJTIwdG8lMjBiZSUyMENDNDAlRTIlODAlOTNDQzQyJTIwb24lMjBjaGFubmVsJTIwMTIpJTIwb2YlMjB0aGUlMEElMjAlMjAlMkYlMkYlMjBmYWRlcmZveCUyMHRvJTIwbWl4JTIwYSUyMGNvbG9yLiUwQSUyMCUyMC5jb2xvcihmYWRlcmZveC5jYyg0MCUyQyUyMDEyKSUyQyUyMGZhZGVyZm94LmNjKDQxJTJDJTIwMTIpJTJDJTIwZmFkZXJmb3guY2MoNDIlMkMlMjAxMikpJTBBJTIwJTIwLm91dCgp)
 
 ## Documentation
 
 ### midi.start()
 
 Start midi and optionally set default values. You have to call this function before using any midi functions.
+Note: It is important to `wait` the function, otherwise midi access isn't ready and you may not be able to target a specific midi input.
 
 ```js
-midi.start({
+await midi.start({
   // Which input to use in `note()` and `cc()` by default.
   // Can be an input index, an input name or '*' to always listen to all inputs
   // by default.
-  input: 0,
+  input: '*',
 
   // Which channel to use in `note()` and `cc()` by default.
   // Can be a channel index (0 -> midi channel 1, 1 -> midi channel 2, ...) or
   // '*' to always listen to all channels by default.
-  channel: 0,
+  channel: '*',
 
   // Default attack, decay, sustain and release values for the `adsr()` function
   // that can be chained to `note()`.
@@ -162,7 +170,7 @@ note('C3').adsr(attack, decay, sustain, release)
 
 ### velocity()
 
-Retrieves the latest velocity played for a the note that calls it, in a range from 0 to 1.
+Retrieves the latest velocity played for the note in a range from 0 to 1.
 
 ```js
 note('C3').velocity()
@@ -228,7 +236,7 @@ note(60)
 
 ### Accessing midi values directly
 
-`note()` and `cc()` do not directly return the corresponding values. Instead they return a function. This is useful for usage as a parameter as the the values are updated automatically:
+`note()` and `cc()` do not directly return the corresponding values. Instead they return a function. This is useful for usage as a parameter as the values are updated automatically:
 
 ```js
 // The color will get updated as soon as the value of CC40 changes.
