@@ -1,5 +1,6 @@
 {
   "type": "module",
+  "name": "hydra-midi",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "version": "0.4.0",
