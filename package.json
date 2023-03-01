@@ -3,6 +3,16 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "version": "0.4.0",
+  "license": "MIT",
+  "author": {
+    "name": "Arno Schlipf",
+    "url": "https://a--s.info"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnoson/hydra-midi.git"
+  },
+  "bugs": "https://github.com/arnoson/hydra-midi/issues",
   "scripts": {
     "cleanup": "shx rm -rf ./dist",
     "build": "npm run cleanup && tsup",
