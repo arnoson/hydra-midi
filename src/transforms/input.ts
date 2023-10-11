@@ -1,5 +1,5 @@
 import { cc, note, onNote } from '../hydra-api'
-import { ChannelArg, InputArg, NoteArg } from '../types'
+import { ChannelArg, InputArg, NoteArg, NoteEventContext } from '../types'
 import { channel } from './channel'
 
 /**
@@ -15,7 +15,7 @@ export const input = (input: InputArg) => ({
   cc: (_index: number, _channel: ChannelArg, _input?: InputArg) =>
     cc(_index, _channel, _input ?? input),
 
-  onNote: (_note: NoteArg, _event: Function) =>
+  onNote: (_note: NoteArg, _event: (context: NoteEventContext) => void) =>
     onNote(_note, '*', input, _event),
 
   channel: (_channel: ChannelArg) => channel(_channel, input),

@@ -23,6 +23,12 @@ export interface HydraContext {
   }
 }
 
+export interface NoteEventContext {
+  note: number
+  velocity: number
+  channel: number
+}
+
 export interface Defaults {
   input: InputArg
   channel: ChannelArg

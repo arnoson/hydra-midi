@@ -1,4 +1,4 @@
-import type { CCValues, Defaults } from './types'
+import type { CCValues, Defaults, NoteEventContext } from './types'
 
 const ccValues: CCValues = new Map(
   JSON.parse(sessionStorage.getItem('hydra-midi_ccValues') || '[]')
@@ -17,7 +17,7 @@ export default {
 
   playingNotes: new Map<string, number>(),
 
-  noteOnEvents: new Map<string, Function>(),
+  noteOnEvents: new Map<string, (context: NoteEventContext) => void>(),
 
   defaults: {
     channel: '*',

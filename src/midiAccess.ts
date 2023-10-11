@@ -79,12 +79,12 @@ midiAccess.on(MidiAccess.TypeNoteOn, ({ data, channel, input }) => {
   const noteId = getMidiId(note, channel, input.id)
   playingNotes.set(noteId, velocity)
   envelopes.get(noteId)?.trigger()
-  noteOnEvents.get(noteId)?.()
+  noteOnEvents.get(noteId)?.({ note, velocity, channel })
 
   getMidiWildcards(note, channel, input.id).forEach(wildcard => {
     playingNotes.set(wildcard, velocity)
     envelopes.get(wildcard)?.trigger()
-    noteOnEvents.get(wildcard)?.()
+    noteOnEvents.get(wildcard)?.({ note, velocity, channel })
   })
 
   logMidiMessage({ input, type: 'on', channel, data })

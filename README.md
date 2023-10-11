@@ -201,6 +201,27 @@ myController = midi.input(3).channel(15)
 myController.onNote('c1', () => {
   osc().out()
 })
+
+// or listen to all notes:
+myController.onNote('*', ({ note, velocity, channel }) => {
+  osc().out()
+})
+```
+
+Or listen to any note:
+
+```js
+myController = midi.input(3).channel('*')
+
+scene1 = () => solid(1,0,0).out()
+scene2 = () => solid(0,1,0).out()
+
+myController.onNote('*', ({ note, velocity, channel }) => {
+  switch (note) {
+    case 36: { scene1(); break; }
+    case 37: { scene2(); break; }
+  }
+})
 ```
 
 ### Transforms
