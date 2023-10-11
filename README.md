@@ -7,7 +7,7 @@ A utility script for using midi with https://hydra.ojack.xyz.
 Start (and optionally show) midi and use midi inputs as parameters for hydra:
 
 ```js
-// You can either use `@latest` or load a specific version with, for example, `@0.4.0`.
+// You can either use `@latest` or load a specific version with, for example, `@0.4.1`.
 await loadScript('https://cdn.jsdelivr.net/npm/hydra-midi@latest/dist/index.js')
 
 // Use midi messages from all channels of all inputs.
@@ -198,14 +198,7 @@ You can define an event to trigger when a particular note is played on a specifi
 ```js
 myController = midi.input(3).channel(15)
 
-myController.onNote('c1', () => {
-  osc().out()
-})
-
-// or listen to all notes:
-myController.onNote('*', ({ note, velocity, channel }) => {
-  osc().out()
-})
+myController.onNote('c1', () => osc().out())
 ```
 
 Or listen to any note:
