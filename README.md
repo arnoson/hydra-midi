@@ -213,8 +213,8 @@ Or listen to any note:
 ```js
 myController = midi.input(3).channel('*')
 
-scene1 = () => solid(1,0,0).out()
-scene2 = () => solid(0,1,0).out()
+scene1 = () => solid(1, 0, 0).out()
+scene2 = () => solid(0, 1, 0).out()
 
 myController.onNote('*', ({ note, velocity, channel }) => {
   switch (note) {
