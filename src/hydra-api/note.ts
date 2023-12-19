@@ -19,6 +19,8 @@ export const getNoteId = (
     resolveInput(input ?? state.defaults.input)
   )
 
+
+
 /**
  * returns 1 if the specified note is playing, and 0 otherwise. This is useful
  * if you want to use the value inside a parameter function. See also {@link note}.

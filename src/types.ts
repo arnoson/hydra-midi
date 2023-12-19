@@ -4,10 +4,12 @@ export type MidiMessageType = 'cc' | 'on' | 'off' | 'bend' | 'aft'
 
 export type ChannelArg = number | '*'
 export type NoteArg = number | string | '*'
+export type CcArg = number //| '*'
 export type InputArg = number | string | '*'
 export type IndexArg = number | '*'
 
 export type NoteId = `${NoteArg}/${ChannelArg}/${InputArg}`
+export type CcId = `${CcArg}/${ChannelArg}/${InputArg}`
 
 export interface HydraContext {
   time: number
@@ -26,6 +28,12 @@ export interface HydraContext {
 export interface NoteEventContext {
   note: number
   velocity: number
+  channel: number
+}
+
+export interface CcEventContext {
+  index: number
+  value: number
   channel: number
 }
 

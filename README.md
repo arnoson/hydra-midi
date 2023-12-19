@@ -216,6 +216,28 @@ myController.onNote('*', ({ note, velocity, channel }) => {
   }
 })
 ```
+### .onCC()
+
+You can define an event to trigger when a particular CC is changing on a specific input or channel:
+
+```js
+myController = midi.input(3).channel(15)
+
+myController.onCC('1', () => osc().out())
+```
+
+Or listen to any CC:
+
+```js
+myController = midi.input(3).channel('*')
+
+
+myController.onCC("*", ({ index, value, channel }) => { 
+    console.log("onCCevent")
+    console.log(index) 
+    console.log(value)
+    console.log(channel)
+});
 
 ### Transforms
 
