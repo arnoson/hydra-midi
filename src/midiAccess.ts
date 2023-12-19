@@ -65,7 +65,6 @@ midiAccess.on(MidiAccess.TypeControlChange, ({ data, channel, input }) => {
   const [index, value] = data
   const ccId = getMidiId(index, channel, input.id)
   const normalizedValue = value / 127
-  console.log("midiaccess ", index, value, channel, ccId, input)
   ccValues.set(ccId, normalizedValue)
   CcEvents.get(ccId)?.({ index, value, channel })
   getMidiWildcards(index, channel, input.id).forEach(wildcard => {
