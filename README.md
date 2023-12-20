@@ -297,21 +297,12 @@ Contributions to the script and it's documentation are welcome :~) Please make s
 - use prettier to format your code (should happen automatically if you work on this project in VSCode)
 - use [conventional commits](https://www.conventionalcommits.or) (these are used to automatically generate release messages, including credits for your contributions)
 
-To test this script in development, run `pnpm dev`, which will compile (and watch) `/src/index.js`, start a localhost in `/dist` and tunnel it with [untun](https://github.com/unjs/untun). Use the public url printed in the terminal to access your development script:
+To test this script in development, run `pnpm dev`, which will
+- compile (and watch) `/src/index.ts`
+- start a local server in `/dist` 
+- tunnel it with [untun](https://github.com/unjs/untun)
+- open a new tab in your browser with an empty hydra sketch using your local development version of hydra-midi
 
-```sh
-$ pnpm dev
-...
-[tunnel] ✔ Tunnel ready at https://your-tunnel-url.trycloudflare.com
-```
+If you have e.g. Firefox as your default browser but still want to open it in Chrome (needed for WebMidi) run `pnpm dev:chrome`.
 
-```js
-// in https://hydra.ojack.xyz/
-
-await loadScript('https://your-tunnel-url.trycloudflare.com/index.js')
-await midi.start({ channel: '*', input: '*' }).show()
-
-// do some stuff ...
-```
-
-Note: there is no automatic browser-reloading when your code has changed. Instead simply re-evaluate your code in hydra with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>
+Note: there is no automatic browser-reloading when your code has changed. Instead simply re-evaluate your sketch in hydra with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>

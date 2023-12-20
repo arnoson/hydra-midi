@@ -1,11 +1,11 @@
 import { defineConfig } from 'tsup'
 
-export default defineConfig({
+export default defineConfig(options => ({
   loader: { '.css': 'text' },
   format: 'iife',
   entry: ['src/index.ts'],
   target: 'es2022',
-  minify: 'terser',
+  minify: options.watch ? false : 'terser',
   dts: true,
   outExtension: () => ({ js: '.js' }),
-})
+}))
