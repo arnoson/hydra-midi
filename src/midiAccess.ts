@@ -3,7 +3,7 @@ import { envelopes } from './transforms/adsr'
 import { MidiAccess } from './lib/MidiAccess'
 import { logMidiMessage } from './gui'
 import { getNoteNumber } from './utils'
-import { ChannelArg, InputArg, NoteArg, NoteId } from './types'
+import { ChannelArg, IndexArg, InputArg, NoteArg, NoteId } from './types'
 
 // Those properties will never change, only their content, so it's save to
 // destructure.
@@ -13,15 +13,17 @@ const { ccValues, playingNotes, noteOnEvents, ccEvents } = state
 export const midiAccess = new MidiAccess()
 
 /**
- * Get an id for a midi message using an osc style address.
+ * Get an id for a midi message using an osc style address. Right now this can
+ * either be a note (`data` would be the note number) or a cc message (`data`
+ * would be the cc number).
  * @example getMidiId(60, 0, 1) // -> '60/0/1'
  * @returns
  */
 export const getMidiId = (
-  note: NoteArg = '*',
+  data: IndexArg = '*',
   channel: ChannelArg = '*',
   input: InputArg = '*',
-): NoteId => `${note}/${channel}/${input}`
+): NoteId => `${data}/${channel}/${input}`
 
 /**
  * Get all possible wildcard combinations for a midi id ({@link getMidiId}).
@@ -29,17 +31,17 @@ export const getMidiId = (
  * wildcard '60/0/*' (Note 60 on channel 0 on any input).
  */
 export const getMidiWildcards = (
-  note: number,
-  channel: number,
+  data1: number,
+  data2: number,
   input: string,
 ) => [
   getMidiId('*', '*', '*'),
-  getMidiId(note, '*', '*'),
-  getMidiId('*', channel, '*'),
+  getMidiId(data1, '*', '*'),
+  getMidiId('*', data2, '*'),
   getMidiId('*', '*', input),
-  getMidiId(note, channel, '*'),
-  getMidiId('*', channel, input),
-  getMidiId(note, '*', input),
+  getMidiId(data1, data2, '*'),
+  getMidiId('*', data2, input),
+  getMidiId(data1, '*', input),
 ]
 
 export const resolveInput = (input: InputArg) =>
