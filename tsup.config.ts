@@ -7,5 +7,6 @@ export default defineConfig(options => ({
   target: 'es2022',
   minify: options.watch ? false : 'terser',
   dts: !options.watch,
+  clean: true,
   outExtension: () => ({ js: '.js' }),
 }))
