@@ -6,6 +6,6 @@ export default defineConfig(options => ({
   entry: ['src/index.ts'],
   target: 'es2022',
   minify: options.watch ? false : 'terser',
-  dts: true,
+  dts: !options.watch,
   outExtension: () => ({ js: '.js' }),
 }))
