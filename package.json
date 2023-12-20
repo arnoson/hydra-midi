@@ -18,7 +18,7 @@
   "scripts": {
     "build": "tsup",
     "server": "python3 -m http.server --bind 127.0.0.1 3000 --directory dist",
-    "dev": "concurrently -P \"npm:server\" \"tsup --watch\" \"node ./scripts/dev.js {@}\" -c yellow,blue,green",
+    "dev": "concurrently -P \"npm:server\" \"node ./scripts/dev.js {@}\"  \"tsup --watch\" -c yellow,blue,green -n server,tunnel,tsup",
     "dev:chrome": "pnpm dev -- --browser chrome",
     "release": "bumpp",
     "test:types": "tsc --noEmit",
