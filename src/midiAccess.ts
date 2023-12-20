@@ -7,7 +7,7 @@ import { ChannelArg, InputArg, NoteArg, NoteId } from './types'
 
 // Those properties will never change, only their content, so it's save to
 // destructure.
-const { ccValues, playingNotes, noteOnEvents, CcEvents } = state
+const { ccValues, playingNotes, noteOnEvents, ccEvents } = state
 
 // Expose the `MidiAccess` instance because we need it in other files too.
 export const midiAccess = new MidiAccess()
@@ -66,10 +66,10 @@ midiAccess.on(MidiAccess.TypeControlChange, ({ data, channel, input }) => {
   const ccId = getMidiId(index, channel, input.id)
   const normalizedValue = value / 127
   ccValues.set(ccId, normalizedValue)
-  CcEvents.get(ccId)?.({ index, value, channel })
+  ccEvents.get(ccId)?.({ index, value, channel })
   getMidiWildcards(index, channel, input.id).forEach(wildcard => {
     ccValues.set(wildcard, normalizedValue)
-    CcEvents.get(wildcard)?.({ index, value, channel })
+    ccEvents.get(wildcard)?.({ index, value, channel })
   })
 
   logMidiMessage({ input, type: 'cc', channel, data })

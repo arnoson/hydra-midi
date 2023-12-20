@@ -9,5 +9,5 @@ export const onCC = (
   event: (context: CcEventContext) => void,
 ) => {
   const ccId = getCcId(index, channel, input)
-  state.CcEvents.set(ccId, event)
+  state.ccEvents.set(ccId, event)
 }

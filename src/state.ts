@@ -24,7 +24,7 @@ export default {
 
   noteOnEvents: new Map<string, (context: NoteEventContext) => void>(),
 
-  CcEvents: new Map<string, (context: CcEventContext) => void>(),
+  ccEvents: new Map<string, (context: CcEventContext) => void>(),
 
   defaults: {
     channel: '*',
