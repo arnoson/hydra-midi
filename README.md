@@ -289,3 +289,12 @@ osc(() => _cc(40) * 2, 0, 0).out() // This could also be achieved with `scale()`
 noteIsPlaying = _note(60)
 solid(1, 0, 0).invert(noteIsPlaying).out()
 ```
+
+## Contribute
+
+Contributions to the script and it's documentation are welcome :~) Please make sure you:
+
+- use prettier to format your code (should happen automatically if you work on this project in VSCode)
+- use [conventional commits](https://www.conventionalcommits.or) (these are used to automatically generate release messages, including credits for your contributions)
+
+To get started have a look at the `package.json`.
