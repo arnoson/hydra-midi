@@ -7,7 +7,7 @@ import { ChannelArg, InputArg, NoteArg, NoteId } from './types'
 
 // Those properties will never change, only their content, so it's save to
 // destructure.
-const { ccValues, playingNotes, noteOnEvents } = state
+const { ccValues, playingNotes, noteOnEvents, CcEvents } = state
 
 // Expose the `MidiAccess` instance because we need it in other files too.
 export const midiAccess = new MidiAccess()
@@ -33,14 +33,14 @@ export const getMidiWildcards = (
   channel: number,
   input: string
 ) => [
-  getMidiId('*', '*', '*'),
-  getMidiId(note, '*', '*'),
-  getMidiId('*', channel, '*'),
-  getMidiId('*', '*', input),
-  getMidiId(note, channel, '*'),
-  getMidiId('*', channel, input),
-  getMidiId(note, '*', input),
-]
+    getMidiId('*', '*', '*'),
+    getMidiId(note, '*', '*'),
+    getMidiId('*', channel, '*'),
+    getMidiId('*', '*', input),
+    getMidiId(note, channel, '*'),
+    getMidiId('*', channel, input),
+    getMidiId(note, '*', input),
+  ]
 
 export const resolveInput = (input: InputArg) =>
   input === '*' ? '*' : midiAccess.getInputId(input)
@@ -65,10 +65,13 @@ midiAccess.on(MidiAccess.TypeControlChange, ({ data, channel, input }) => {
   const [index, value] = data
   const ccId = getMidiId(index, channel, input.id)
   const normalizedValue = value / 127
-
   ccValues.set(ccId, normalizedValue)
-  getMidiWildcards(index, channel, input.id).forEach(wildcard =>
+  CcEvents.get(ccId)?.({ index, value, channel })
+  getMidiWildcards(index, channel, input.id).forEach(wildcard => {
     ccValues.set(wildcard, normalizedValue)
+    CcEvents.get(wildcard)?.({ index, value, channel })
+  }
+
   )
 
   logMidiMessage({ input, type: 'cc', channel, data })
@@ -80,7 +83,6 @@ midiAccess.on(MidiAccess.TypeNoteOn, ({ data, channel, input }) => {
   playingNotes.set(noteId, velocity)
   envelopes.get(noteId)?.trigger()
   noteOnEvents.get(noteId)?.({ note, velocity, channel })
-
   getMidiWildcards(note, channel, input.id).forEach(wildcard => {
     playingNotes.set(wildcard, velocity)
     envelopes.get(wildcard)?.trigger()

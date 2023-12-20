@@ -1,7 +1,8 @@
-import { cc } from '../hydra-api/cc'
+import { _cc, cc } from '../hydra-api/cc'
 import { note } from '../hydra-api/note'
 import { onNote } from '../hydra-api/onNote'
-import { ChannelArg, InputArg, NoteArg, NoteEventContext } from '../types'
+import { onCC } from '../hydra-api'
+import { CcArg, CcEventContext, ChannelArg, InputArg, NoteArg, NoteEventContext } from '../types'
 
 /**
  * Channel is chainable to `midi` and `input()` and provides a channel for all
@@ -18,4 +19,8 @@ export const channel = (channel: ChannelArg, input?: InputArg) => ({
 
   onNote: (_note: NoteArg, _event: (context: NoteEventContext) => void) =>
     onNote(_note, channel, input ?? '*', _event),
+
+  onCC: (_index: CcArg, _event: (context: CcEventContext) => void) =>
+    // console.log("channels"),
+    onCC(_index, channel, input ?? '*', _event),
 })
