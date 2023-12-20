@@ -34,7 +34,7 @@ export class MidiAccess extends SimpleEventEmitter<number, MidiMessagePayload> {
   access: WebMidi.MIDIAccess | undefined
 
   static parseMessage(
-    message: WebMidi.MIDIMessageEvent
+    message: WebMidi.MIDIMessageEvent,
   ): { type: number } & Omit<MidiMessagePayload, 'input'> {
     const [status, data1, data2] = message.data
     const type = status & 0xf0

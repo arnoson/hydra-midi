@@ -6,7 +6,7 @@ export const onNote = (
   note: NoteArg,
   channel: ChannelArg,
   input: InputArg,
-  event: (context: NoteEventContext) => void
+  event: (context: NoteEventContext) => void,
 ) => {
   const noteId = getNoteId(note, channel, input)
   state.noteOnEvents.set(noteId, event)

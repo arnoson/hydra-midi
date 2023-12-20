@@ -1,7 +1,12 @@
-import type { CCValues, Defaults, NoteEventContext, CcEventContext } from './types'
+import type {
+  CCValues,
+  Defaults,
+  NoteEventContext,
+  CcEventContext,
+} from './types'
 
 const ccValues: CCValues = new Map(
-  JSON.parse(sessionStorage.getItem('hydra-midi_ccValues') || '[]')
+  JSON.parse(sessionStorage.getItem('hydra-midi_ccValues') || '[]'),
 )
 
 // Monkey-patch `ccValues.set` to make a kind of proxy.
@@ -18,7 +23,7 @@ export default {
   playingNotes: new Map<string, number>(),
 
   noteOnEvents: new Map<string, (context: NoteEventContext) => void>(),
-  
+
   CcEvents: new Map<string, (context: CcEventContext) => void>(),
 
   defaults: {

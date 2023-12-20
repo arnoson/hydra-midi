@@ -4,11 +4,15 @@ import { getMidiId, resolveInput } from '../midiAccess'
 import { scale, range, value } from '../transforms'
 import { ChannelArg, IndexArg, InputArg } from '../types'
 
-export const getCcId = (index: IndexArg, channel?: ChannelArg, input?: InputArg) =>
+export const getCcId = (
+  index: IndexArg,
+  channel?: ChannelArg,
+  input?: InputArg,
+) =>
   getMidiId(
     index,
     channel ?? state.defaults.channel,
-    resolveInput(input ?? state.defaults.input)
+    resolveInput(input ?? state.defaults.input),
   )
 
 /**
@@ -20,7 +24,7 @@ export const getCcId = (index: IndexArg, channel?: ChannelArg, input?: InputArg)
 export const _cc = (
   index: IndexArg = '*',
   channel: ChannelArg = '*',
-  input: InputArg = '*'
+  input: InputArg = '*',
 ) => state.ccValues.get(getCcId(index, channel, input)) ?? 0
 
 /**
@@ -31,7 +35,7 @@ export const _cc = (
 export const cc = (
   index: IndexArg = '*',
   channel?: ChannelArg,
-  input?: InputArg
+  input?: InputArg,
 ) => {
   const ccId = getCcId(index, channel, input)
   const fn = () => state.ccValues.get(ccId) ?? 0

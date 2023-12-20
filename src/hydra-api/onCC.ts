@@ -6,10 +6,8 @@ export const onCC = (
   index: IndexArg,
   channel: ChannelArg,
   input: InputArg,
-  event: (context: CcEventContext) => void
+  event: (context: CcEventContext) => void,
 ) => {
   const ccId = getCcId(index, channel, input)
   state.CcEvents.set(ccId, event)
 }
-
-

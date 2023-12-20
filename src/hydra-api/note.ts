@@ -11,23 +11,24 @@ const noteIsPlaying = (noteId: NoteId) => state.playingNotes.has(noteId)
 export const getNoteId = (
   note?: NoteArg,
   channel?: ChannelArg,
-  input?: InputArg
+  input?: InputArg,
 ): NoteId =>
   getMidiId(
     note && resolveNote(note),
     channel ?? state.defaults.channel,
-    resolveInput(input ?? state.defaults.input)
+    resolveInput(input ?? state.defaults.input),
   )
-
-
 
 /**
  * returns 1 if the specified note is playing, and 0 otherwise. This is useful
  * if you want to use the value inside a parameter function. See also {@link note}.
  * @example solid(1, 0, () => _note(60) * 0.5).out() // Could also be achieved with solid(1, 0, note(60).value(v => v * 0.5)).out()
  */
-export const _note = (note?: NoteArg, channel?: ChannelArg, input?: InputArg) =>
-  noteIsPlaying(getNoteId(note, channel, input)) ? 1 : 0
+export const _note = (
+  note?: NoteArg,
+  channel?: ChannelArg,
+  input?: InputArg,
+) => (noteIsPlaying(getNoteId(note, channel, input)) ? 1 : 0)
 
 /**
  * returns the velocity of the specified note in a range from 0 to 1. This is useful
@@ -37,7 +38,7 @@ export const _note = (note?: NoteArg, channel?: ChannelArg, input?: InputArg) =>
 export const _noteVelocity = (
   note?: NoteArg,
   channel?: ChannelArg,
-  input?: InputArg
+  input?: InputArg,
 ) => velocity(getNoteId(note, channel, input))()()()
 
 /**
@@ -48,7 +49,7 @@ export const _noteVelocity = (
 export const note = (
   note?: NoteArg,
   channel?: ChannelArg,
-  input?: InputArg
+  input?: InputArg,
 ) => {
   const noteId = getNoteId(note, channel, input)
   const fn = () => (noteIsPlaying(noteId) ? 1 : 0)

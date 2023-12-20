@@ -231,12 +231,11 @@ Or listen to any CC:
 ```js
 myController = midi.input(3).channel('*')
 
-
 myController.onCC("*", ({ index, value, channel }) => { 
-    console.log("onCCevent")
-    console.log(index) 
-    console.log(value)
-    console.log(channel)
+  console.log("onCCevent")
+  console.log(index) 
+  console.log(value)
+  console.log(channel)
 });
 
 ### Transforms

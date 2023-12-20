@@ -7,10 +7,10 @@ type ChainableMethods<M extends ChainableMethodFactories> = {
 /** Make a function chainable. */
 export const chainable = <
   F extends Function,
-  M extends ChainableMethodFactories
+  M extends ChainableMethodFactories,
 >(
   fn: F,
-  methods: M
+  methods: M,
 ): F & ChainableMethods<M> => {
   // Copy the function so we don't mutate the original.
   const copy = fn.bind({}) as F & ChainableMethods<M>
@@ -19,7 +19,7 @@ export const chainable = <
   // reference to the function so it can call it and work with it's return
   // value.
   Object.entries(methods).forEach(
-    ([name, factory]: [keyof M, Function]) => (copy[name] = factory(fn))
+    ([name, factory]: [keyof M, Function]) => (copy[name] = factory(fn)),
   )
 
   return copy

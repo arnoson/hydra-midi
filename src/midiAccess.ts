@@ -20,7 +20,7 @@ export const midiAccess = new MidiAccess()
 export const getMidiId = (
   note: NoteArg = '*',
   channel: ChannelArg = '*',
-  input: InputArg = '*'
+  input: InputArg = '*',
 ): NoteId => `${note}/${channel}/${input}`
 
 /**
@@ -31,16 +31,16 @@ export const getMidiId = (
 export const getMidiWildcards = (
   note: number,
   channel: number,
-  input: string
+  input: string,
 ) => [
-    getMidiId('*', '*', '*'),
-    getMidiId(note, '*', '*'),
-    getMidiId('*', channel, '*'),
-    getMidiId('*', '*', input),
-    getMidiId(note, channel, '*'),
-    getMidiId('*', channel, input),
-    getMidiId(note, '*', input),
-  ]
+  getMidiId('*', '*', '*'),
+  getMidiId(note, '*', '*'),
+  getMidiId('*', channel, '*'),
+  getMidiId('*', '*', input),
+  getMidiId(note, channel, '*'),
+  getMidiId('*', channel, input),
+  getMidiId(note, '*', input),
+]
 
 export const resolveInput = (input: InputArg) =>
   input === '*' ? '*' : midiAccess.getInputId(input)
@@ -70,9 +70,7 @@ midiAccess.on(MidiAccess.TypeControlChange, ({ data, channel, input }) => {
   getMidiWildcards(index, channel, input.id).forEach(wildcard => {
     ccValues.set(wildcard, normalizedValue)
     CcEvents.get(wildcard)?.({ index, value, channel })
-  }
-
-  )
+  })
 
   logMidiMessage({ input, type: 'cc', channel, data })
 })

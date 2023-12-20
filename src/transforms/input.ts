@@ -1,5 +1,12 @@
 import { cc, note, onNote, onCC } from '../hydra-api'
-import { CcArg, ChannelArg, InputArg, NoteArg, NoteEventContext, CcEventContext } from '../types'
+import {
+  CcArg,
+  ChannelArg,
+  InputArg,
+  NoteArg,
+  NoteEventContext,
+  CcEventContext,
+} from '../types'
 import { channel } from './channel'
 
 /**

@@ -108,6 +108,6 @@ const highlightInput = (input: WebMidi.MIDIInput, type: MidiMessageType) => {
 
   highlightTimeouts.set(
     input.id,
-    setTimeout(() => gui?.style.setProperty(inputColorVariable, null), 100)
+    setTimeout(() => gui?.style.setProperty(inputColorVariable, null), 100),
   )
 }

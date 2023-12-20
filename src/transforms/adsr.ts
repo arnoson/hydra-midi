@@ -28,6 +28,6 @@ export const adsr =
         scale,
         range,
         value,
-      }
+      },
     )
   }

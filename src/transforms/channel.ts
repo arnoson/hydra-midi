@@ -2,7 +2,14 @@ import { _cc, cc } from '../hydra-api/cc'
 import { note } from '../hydra-api/note'
 import { onNote } from '../hydra-api/onNote'
 import { onCC } from '../hydra-api'
-import { CcArg, CcEventContext, ChannelArg, InputArg, NoteArg, NoteEventContext } from '../types'
+import {
+  CcArg,
+  CcEventContext,
+  ChannelArg,
+  InputArg,
+  NoteArg,
+  NoteEventContext,
+} from '../types'
 
 /**
  * Channel is chainable to `midi` and `input()` and provides a channel for all
