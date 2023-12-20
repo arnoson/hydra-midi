@@ -14,7 +14,7 @@ export const getNoteId = (
   input?: InputArg,
 ): NoteId =>
   getMidiId(
-    note && resolveNote(note),
+    note ? resolveNote(note) : undefined,
     channel ?? state.defaults.channel,
     resolveInput(input ?? state.defaults.input),
   )
