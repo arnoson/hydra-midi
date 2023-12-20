@@ -297,4 +297,21 @@ Contributions to the script and it's documentation are welcome :~) Please make s
 - use prettier to format your code (should happen automatically if you work on this project in VSCode)
 - use [conventional commits](https://www.conventionalcommits.or) (these are used to automatically generate release messages, including credits for your contributions)
 
-To get started have a look at the `package.json`.
+To test this script in development, run `pnpm dev`, which will compile (and watch) `/src/index.js`, start a localhost in `/dist` and tunnel it with [untun](https://github.com/unjs/untun). Use the public url printed in the terminal to access your development script:
+
+```sh
+$ pnpm dev
+...
+[tunnel] ✔ Tunnel ready at https://your-tunnel-url.trycloudflare.com
+```
+
+```js
+// in https://hydra.ojack.xyz/
+
+await loadScript('https://your-tunnel-url.trycloudflare.com/index.js')
+await midi.start({ channel: '*', input: '*' }).show()
+
+// do some stuff ...
+```
+
+Note: there is no automatic browser-reloading when your code has changed. Instead simply re-evaluate your code in hydra with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>

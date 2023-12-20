@@ -18,7 +18,9 @@
   "scripts": {
     "cleanup": "shx rm -rf ./dist",
     "build": "npm run cleanup && tsup",
-    "dev": "tsup --watch",
+    "server": "python3 -m http.server --bind 127.0.0.1 3000 --directory dist",
+    "tunnel": "untun tunnel http://localhost:3000",
+    "dev": "concurrently \"npm:server\" \"npm:tunnel\" \"tsup --watch\" -c yellow,blue,green",
     "release": "bumpp",
     "test:types": "tsc --noEmit",
     "format:fix": "prettier --write .",
@@ -27,10 +29,12 @@
   "devDependencies": {
     "@types/webmidi": "^2.0.7",
     "bumpp": "^9.2.1",
+    "concurrently": "^8.2.2",
     "prettier": "^3.1.1",
     "shx": "^0.3.4",
     "terser": "^5.16.5",
     "tsup": "^6.6.3",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "untun": "^0.1.3"
   }
 }
