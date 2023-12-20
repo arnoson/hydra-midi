@@ -4,12 +4,11 @@ export type MidiMessageType = 'cc' | 'on' | 'off' | 'bend' | 'aft'
 
 export type ChannelArg = number | '*'
 export type NoteArg = number | string | '*'
-export type CCArg = number //| '*'
 export type InputArg = number | string | '*'
 export type IndexArg = number | '*'
 
 export type NoteId = `${NoteArg}/${ChannelArg}/${InputArg}`
-export type CCId = `${CCArg}/${ChannelArg}/${InputArg}`
+export type CCId = `${IndexArg}/${ChannelArg}/${InputArg}`
 
 export interface HydraContext {
   time: number

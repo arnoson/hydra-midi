@@ -1,11 +1,11 @@
-import { _cc, cc } from '../hydra-api/cc'
+import { onCC } from '../hydra-api'
+import { cc } from '../hydra-api/cc'
 import { note } from '../hydra-api/note'
 import { onNote } from '../hydra-api/onNote'
-import { onCC } from '../hydra-api'
 import {
-  CCArg,
   CCEventContext,
   ChannelArg,
+  IndexArg,
   InputArg,
   NoteArg,
   NoteEventContext,
@@ -27,7 +27,6 @@ export const channel = (channel: ChannelArg, input?: InputArg) => ({
   onNote: (_note: NoteArg, _event: (context: NoteEventContext) => void) =>
     onNote(_note, channel, input ?? '*', _event),
 
-  onCC: (_index: CCArg, _event: (context: CCEventContext) => void) =>
-    // console.log("channels"),
+  onCC: (_index: IndexArg, _event: (context: CCEventContext) => void) =>
     onCC(_index, channel, input ?? '*', _event),
 })

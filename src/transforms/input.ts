@@ -1,6 +1,5 @@
 import { cc, note, onNote, onCC } from '../hydra-api'
 import {
-  CCArg,
   ChannelArg,
   InputArg,
   NoteArg,
