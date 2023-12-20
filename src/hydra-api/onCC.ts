@@ -1,13 +1,13 @@
 import state from '../state'
-import { ChannelArg, InputArg, IndexArg, CcEventContext } from '../types'
-import { getCcId } from './cc'
+import { ChannelArg, InputArg, IndexArg, CCEventContext } from '../types'
+import { getCCId } from './cc'
 
 export const onCC = (
   index: IndexArg,
   channel: ChannelArg,
   input: InputArg,
-  event: (context: CcEventContext) => void,
+  event: (context: CCEventContext) => void,
 ) => {
-  const ccId = getCcId(index, channel, input)
+  const ccId = getCCId(index, channel, input)
   state.ccEvents.set(ccId, event)
 }

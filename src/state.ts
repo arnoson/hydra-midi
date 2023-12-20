@@ -2,7 +2,7 @@ import type {
   CCValues,
   Defaults,
   NoteEventContext,
-  CcEventContext,
+  CCEventContext,
 } from './types'
 
 const ccValues: CCValues = new Map(
@@ -24,7 +24,7 @@ export default {
 
   noteOnEvents: new Map<string, (context: NoteEventContext) => void>(),
 
-  ccEvents: new Map<string, (context: CcEventContext) => void>(),
+  ccEvents: new Map<string, (context: CCEventContext) => void>(),
 
   defaults: {
     channel: '*',
