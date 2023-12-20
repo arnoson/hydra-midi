@@ -19,10 +19,13 @@
     "cleanup": "shx rm -rf ./dist",
     "build": "npm run cleanup && tsup",
     "dev": "tsup --watch",
-    "test:types": "tsc --noEmit"
+    "test:types": "tsc --noEmit",
+    "format:fix": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@types/webmidi": "^2.0.7",
+    "prettier": "^3.1.1",
     "shx": "^0.3.4",
     "terser": "^5.16.5",
     "tsup": "^6.6.3",

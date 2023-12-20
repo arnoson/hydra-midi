@@ -24,5 +24,8 @@ jobs:
       - name: Install
         run: pnpm i
 
-      - name: Typecheck
-        run: pnpm run test:types
+      - name: Test types
+        run: pnpm test:types
+
+      - name: Check formating
+        run: pnpm format:check
