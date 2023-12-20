@@ -7,7 +7,7 @@ A utility script for using midi with https://hydra.ojack.xyz.
 Start (and optionally show) midi and use midi inputs as parameters for hydra:
 
 ```js
-// You can either use `@latest` or load a specific version with, for example, `@0.4.1`.
+// You can either use `@latest` or load a specific version with, for example, `@0.4.2`.
 await loadScript('https://cdn.jsdelivr.net/npm/hydra-midi@latest/dist/index.js')
 
 // Use midi messages from all channels of all inputs.
