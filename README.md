@@ -48,14 +48,14 @@ https://cdn.jsdelivr.net/gh/arnoson/hydra-midi@0.3.1/dist/index.js
 await loadScript('https://cdn.jsdelivr.net/npm/hydra-midi@latest/dist/index.js')
 
 // Use midi messages from all channels of all inputs.
-await midi.start({ input: '*', channel: '*' }).show()
+await midi.start().show()
 
 // Trigger an ADSR envelope each time the note C3 is played and scale
 // the value to a range between 20 and 50.
 osc(note('C3').adsr(300, 200, 1, 300).range(20, 50), 0, 0).out()
 ```
 
-[Edit on hydra](https://hydra.ojack.xyz/?code=YXdhaXQlMjBsb2FkU2NyaXB0KCUwQSUyMCUyMCdodHRwcyUzQSUyRiUyRmNkbi5qc2RlbGl2ci5uZXQlMkZucG0lMkZoeWRyYS1taWRpJTQwbGF0ZXN0JTJGZGlzdCUyRmluZGV4LmpzJyUwQSklMEElMEElMkYlMkYlMjBVc2UlMjBtaWRpJTIwbWVzc2FnZXMlMjBmcm9tJTIwYWxsJTIwY2hhbm5lbHMlMjBvZiUyMGFsbCUyMGlucHV0cy4lMEFhd2FpdCUyMG1pZGkuc3RhcnQoJTdCJTIwaW5wdXQlM0ElMjAnKiclMkMlMjBjaGFubmVsJTNBJTIwJyonJTIwJTdEKS5zaG93KCklMEElMEElMkYlMkYlMjBUcmlnZ2VyJTIwYW4lMjBBRFNSJTIwZW52ZWxvcGUlMjBlYWNoJTIwdGltZSUyMHRoZSUyMG5vdGUlMjBDMyUyMGlzJTIwcGxheWVkJTIwYW5kJTIwc2NhbGUlMEElMkYlMkYlMjB0aGUlMjB2YWx1ZSUyMHRvJTIwYSUyMHJhbmdlJTIwYmV0d2VlbiUyMDIwJTIwYW5kJTIwNTAuJTBBb3NjKG5vdGUoJ0MzJykuYWRzcigzMDAlMkMlMjAyMDAlMkMlMjAxJTJDJTIwMzAwKS5yYW5nZSgyMCUyQyUyMDUwKSUyQyUyMDAlMkMlMjAwKS5vdXQoKQ%3D%3D)
+[Edit on hydra](https://hydra.ojack.xyz/?code=YXdhaXQlMjBsb2FkU2NyaXB0KCdodHRwcyUzQSUyRiUyRmNkbi5qc2RlbGl2ci5uZXQlMkZucG0lMkZoeWRyYS1taWRpJTQwbGF0ZXN0JTJGZGlzdCUyRmluZGV4LmpzJyklMEElMEElMkYlMkYlMjBVc2UlMjBtaWRpJTIwbWVzc2FnZXMlMjBmcm9tJTIwYWxsJTIwY2hhbm5lbHMlMjBvZiUyMGFsbCUyMGlucHV0cy4lMEFhd2FpdCUyMG1pZGkuc3RhcnQoKS5zaG93KCklMEElMEElMkYlMkYlMjBUcmlnZ2VyJTIwYW4lMjBBRFNSJTIwZW52ZWxvcGUlMjBlYWNoJTIwdGltZSUyMHRoZSUyMG5vdGUlMjBDMyUyMGlzJTIwcGxheWVkJTIwYW5kJTIwc2NhbGUlMEElMkYlMkYlMjB0aGUlMjB2YWx1ZSUyMHRvJTIwYSUyMHJhbmdlJTIwYmV0d2VlbiUyMDIwJTIwYW5kJTIwNTAuJTBBb3NjKG5vdGUoJ0MzJykuYWRzcigzMDAlMkMlMjAyMDAlMkMlMjAxJTJDJTIwMzAwKS5yYW5nZSgyMCUyQyUyMDUwKSUyQyUyMDAlMkMlMjAwKS5vdXQoKQ%3D%3DD)
 
 ### Use multiple midi controllers
 
