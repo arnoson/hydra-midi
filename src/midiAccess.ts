@@ -26,22 +26,6 @@ export const getMidiId = (
 ): NoteId => `${data}/${channel}/${input}`
 
 /**
- * Get an id for an aftertouch message using an osc style address.
- * @example getAftId(60, 0, 1) // -> '60/0/1'
- * @returns
- */
-export const getAftId = (
-  note: NoteArg,
-  channel?: ChannelArg,
-  input?: InputArg,
-) =>
-  getMidiId(
-    resolveNote(note),
-    channel ?? state.defaults.channel,
-    resolveInput(input ?? state.defaults.input),
-  )
-
-/**
  * Get all possible wildcard combinations for a midi id ({@link getMidiId}).
  * If we have an id for a midi note like this: '60/0/1' we could use the
  * wildcard '60/0/*' (Note 60 on channel 0 on any input).

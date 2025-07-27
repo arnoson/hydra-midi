@@ -1,5 +1,6 @@
 import state from '../state'
-import { getAftId, resolveNote, resolveInput } from '../midiAccess'
+import { resolveNote, resolveInput } from '../midiAccess'
+import { getNoteId } from './note'
 import { ChannelArg, NoteArg, InputArg, AftEventContext } from '../types'
 
 /**
@@ -12,6 +13,6 @@ export const onAft = (
   input: InputArg,
   event: (context: AftEventContext) => void,
 ) => {
-  const aftId = getAftId(resolveNote(note), channel, resolveInput(input))
+  const aftId = getNoteId(resolveNote(note), channel, resolveInput(input))
   state.aftEvents.set(aftId, event)
 } 

@@ -3,17 +3,7 @@ import state from '../state'
 import { getMidiId, resolveNote, resolveInput } from '../midiAccess'
 import { scale, range, value } from '../transforms'
 import { ChannelArg, NoteArg, InputArg } from '../types'
-
-export const getAftId = (
-  note: NoteArg,
-  channel?: ChannelArg,
-  input?: InputArg,
-) =>
-  getMidiId(
-    resolveNote(note),
-    channel ?? state.defaults.channel,
-    resolveInput(input ?? state.defaults.input),
-  )
+import { getNoteId } from './note'
 
 /**
  * Return an aftertouch value for a specific note. This is useful if you want to use the value inside a
@@ -25,7 +15,7 @@ export const _aft = (
   note: NoteArg = '*',
   channel: ChannelArg = '*',
   input: InputArg = '*',
-) => state.aftValues.get(getAftId(note, channel, input)) ?? 0
+) => state.aftValues.get(getNoteId(note, channel, input)) ?? 0
 
 /**
  * Generate a chainable function that returns the aftertouch value for the specified note.
@@ -36,7 +26,7 @@ export const aft = (
   channel?: ChannelArg,
   input?: InputArg,
 ) => {
-  const aftId = getAftId(note, channel, input)
+  const aftId = getNoteId(note, channel, input)
   const fn = () => state.aftValues.get(aftId) ?? 0
   return chainable(fn, { scale, range, value })
 } 
