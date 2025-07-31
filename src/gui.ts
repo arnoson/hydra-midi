@@ -49,14 +49,12 @@ export const hide = () => {
 
 /**
  * Render a list of all open midi inputs.
- * @param {WebMidi.MIDIInputMap} list
  */
-export const showInputs = (list: WebMidi.MIDIInputMap) => {
+export const showInputs = (list: MIDIInputMap) => {
   if (!isEnabled) return
 
-  const getInputName = (input: WebMidi.MIDIInput) =>
-    input.name ?? input.id ?? 'n/a'
-  const template = (input: WebMidi.MIDIInput, index: number) =>
+  const getInputName = (input: MIDIInput) => input.name ?? input.id ?? 'n/a'
+  const template = (input: MIDIInput, index: number) =>
     `<div class="hydra-midi-input" style="color: var(--color-${input.id})">` +
     `#${index} ` +
     `<span class="hydra-midi-input-name">${getInputName(input)}</span>` +
@@ -69,7 +67,7 @@ export const showInputs = (list: WebMidi.MIDIInputMap) => {
  * Log a midi message and highlight the corresponding input.
  */
 export const logMidiMessage = (message: {
-  input: WebMidi.MIDIInput
+  input: MIDIInput
   channel: number
   type: MidiMessageType
   data: number[]
@@ -98,7 +96,7 @@ const highlightTimeouts = new Map<string, number>()
  * Let the input flash for a short moment in the color of the received midi
  * message.
  */
-const highlightInput = (input: WebMidi.MIDIInput, type: MidiMessageType) => {
+const highlightInput = (input: MIDIInput, type: MidiMessageType) => {
   if (!gui) return
 
   clearTimeout(highlightTimeouts.get(input.id))

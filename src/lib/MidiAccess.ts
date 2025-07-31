@@ -3,7 +3,7 @@ import { SimpleEventEmitter } from './SimpleEventEmitter'
 interface MidiMessagePayload {
   data: [data1: number, data2: number]
   channel: number
-  input: WebMidi.MIDIInput
+  input: MIDIInput
 }
 
 /**
@@ -31,12 +31,12 @@ export class MidiAccess extends SimpleEventEmitter<number, MidiMessagePayload> {
 
   enabled = false
   isSetup = false
-  access: WebMidi.MIDIAccess | undefined
+  access: MIDIAccess | undefined
 
   static parseMessage(
-    message: WebMidi.MIDIMessageEvent,
+    message: MIDIMessageEvent,
   ): { type: number } & Omit<MidiMessagePayload, 'input'> {
-    const [status, data1, data2] = message.data
+    const [status, data1, data2] = message.data ?? []
     const type = status & 0xf0
     const channel = status & 0x0f
     return { type, channel, data: [data1, data2] }
@@ -51,7 +51,7 @@ export class MidiAccess extends SimpleEventEmitter<number, MidiMessagePayload> {
     const handleMessage = this.handleMessage.bind(this)
 
     this.access.addEventListener('statechange', ({ port }) => {
-      if (port.state === 'connected') {
+      if (port?.state === 'connected') {
         const input = this.access?.inputs.get(port.id)
         input?.addEventListener('midimessage', handleMessage)
       }
@@ -89,10 +89,10 @@ export class MidiAccess extends SimpleEventEmitter<number, MidiMessagePayload> {
     return input?.id
   }
 
-  handleMessage(message: WebMidi.MIDIMessageEvent) {
+  handleMessage(message: MIDIMessageEvent) {
     if (this.enabled) {
       const { type, data, channel } = MidiAccess.parseMessage(message)
-      const input = message.target as WebMidi.MIDIInput
+      const input = message.target as MIDIInput
       this.emit(type, { data, channel, input })
     }
   }
