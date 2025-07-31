@@ -301,8 +301,6 @@ To test this script in development, run `pnpm dev`, which will
 - compile (and watch) `/src/index.ts`
 - start a local server in `/dist` 
 - tunnel it with [untun](https://github.com/unjs/untun)
-- open a new tab in your browser with an empty hydra sketch using your local development version of hydra-midi
-
-If you have e.g. Firefox as your default browser but still want to open it in Chrome (needed for WebMidi) run `pnpm dev:chrome`.
+- display a hydra link that uses your local development version of hydra-midi
 
 Note: there is no automatic browser-reloading when your code has changed. Instead simply re-evaluate your sketch in hydra with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>
