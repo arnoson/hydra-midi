@@ -7,7 +7,7 @@ import { ChannelArg, IndexArg, InputArg, NoteArg, NoteId } from './types'
 
 // Those properties will never change, only their content, so it's save to
 // destructure.
-const { ccValues, playingNotes, noteOnEvents, ccEvents } = state
+const { ccValues, aftValues, playingNotes, noteOnEvents, ccEvents, aftEvents } = state
 
 // Expose the `MidiAccess` instance because we need it in other files too.
 export const midiAccess = new MidiAccess()
@@ -113,9 +113,29 @@ midiAccess.on(MidiAccess.TypePitchBend, ({ input, data, channel }) => {
 })
 
 midiAccess.on(MidiAccess.TypeAfterTouchChannel, ({ input, data, channel }) => {
+  const value = data[0]
+  const aftId = getMidiId('*', channel, input.id)
+  const normalizedValue = value / 127
+  aftValues.set(aftId, normalizedValue)
+  aftEvents.get(aftId)?.({ note: -1, value, channel })
+  getMidiWildcards(-1, channel, input.id).forEach(wildcard => {
+    aftValues.set(wildcard, normalizedValue)
+    aftEvents.get(wildcard)?.({ note: -1, value, channel })
+  })
+
   logMidiMessage({ input, type: 'aft', channel, data })
 })
 
 midiAccess.on(MidiAccess.TypeAfterTouchPoly, ({ input, data, channel }) => {
+  const [note, value] = data
+  const aftId = getMidiId(note, channel, input.id)
+  const normalizedValue = value / 127
+  aftValues.set(aftId, normalizedValue)
+  aftEvents.get(aftId)?.({ note, value, channel })
+  getMidiWildcards(note, channel, input.id).forEach(wildcard => {
+    aftValues.set(wildcard, normalizedValue)
+    aftEvents.get(wildcard)?.({ note, value, channel })
+  })
+
   logMidiMessage({ input, type: 'aft', channel, data })
 })

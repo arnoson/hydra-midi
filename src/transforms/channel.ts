@@ -2,6 +2,8 @@ import { onCC } from '../hydra-api'
 import { cc } from '../hydra-api/cc'
 import { note } from '../hydra-api/note'
 import { onNote } from '../hydra-api/onNote'
+import { aft } from '../hydra-api/aft'
+import { onAft } from '../hydra-api/onAft'
 import {
   CCEventContext,
   ChannelArg,
@@ -9,6 +11,7 @@ import {
   InputArg,
   NoteArg,
   NoteEventContext,
+  AftEventContext,
 } from '../types'
 
 /**
@@ -24,9 +27,15 @@ export const channel = (channel: ChannelArg, input?: InputArg) => ({
   cc: (_index?: number, _channel?: ChannelArg, _input?: InputArg) =>
     cc(_index, _channel ?? channel, _input ?? input),
 
+  aft: (_note?: NoteArg, _channel?: ChannelArg, _input?: InputArg) =>
+    aft(_note, _channel ?? channel, _input ?? input),
+
   onNote: (_note: NoteArg, _event: (context: NoteEventContext) => void) =>
     onNote(_note, channel, input ?? '*', _event),
 
   onCC: (_index: IndexArg, _event: (context: CCEventContext) => void) =>
     onCC(_index, channel, input ?? '*', _event),
+
+  onAft: (_note: NoteArg, _event: (context: AftEventContext) => void) =>
+    onAft(_note, channel, input ?? '*', _event),
 })

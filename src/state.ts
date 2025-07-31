@@ -3,10 +3,15 @@ import type {
   Defaults,
   NoteEventContext,
   CCEventContext,
+  AftEventContext,
 } from './types'
 
 const ccValues: CCValues = new Map(
   JSON.parse(sessionStorage.getItem('hydra-midi_ccValues') || '[]'),
+)
+
+const aftValues: CCValues = new Map(
+  JSON.parse(sessionStorage.getItem('hydra-midi_aftValues') || '[]'),
 )
 
 // Monkey-patch `ccValues.set` to make a kind of proxy.
@@ -17,14 +22,25 @@ ccValues.set = function (key: string, value: number) {
   return result
 }
 
+// Monkey-patch `aftValues.set` to make a kind of proxy.
+const { set: setAft } = aftValues
+aftValues.set = function (key: string, value: number) {
+  const result = setAft.apply(this, [key, value])
+  sessionStorage.setItem('hydra-midi_aftValues', JSON.stringify([...aftValues]))
+  return result
+}
+
 export default {
   ccValues,
+  aftValues,
 
   playingNotes: new Map<string, number>(),
 
   noteOnEvents: new Map<string, (context: NoteEventContext) => void>(),
 
   ccEvents: new Map<string, (context: CCEventContext) => void>(),
+
+  aftEvents: new Map<string, (context: AftEventContext) => void>(),
 
   defaults: {
     channel: '*',

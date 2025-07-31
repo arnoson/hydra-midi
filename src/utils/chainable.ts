@@ -1,6 +1,6 @@
 type ChainableMethodFactories = Record<string, (fn: Function) => Function>
 
-type ChainableMethods<M extends ChainableMethodFactories> = {
+export type ChainableMethods<M extends ChainableMethodFactories> = {
   [K in keyof M]: ReturnType<M[K]>
 }
 

@@ -36,6 +36,12 @@ export interface CCEventContext {
   channel: number
 }
 
+export interface AftEventContext {
+  note: number
+  value: number
+  channel: number
+}
+
 export interface Defaults {
   input: InputArg
   channel: ChannelArg
