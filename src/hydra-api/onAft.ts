@@ -15,4 +15,4 @@ export const onAft = (
 ) => {
   const aftId = getNoteId(resolveNote(note), channel, resolveInput(input))
   state.aftEvents.set(aftId, event)
-} 
+}

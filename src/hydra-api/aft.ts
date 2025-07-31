@@ -29,4 +29,4 @@ export const aft = (
   const aftId = getNoteId(note, channel, input)
   const fn = () => state.aftValues.get(aftId) ?? 0
   return chainable(fn, { scale, range, value })
-} 
+}

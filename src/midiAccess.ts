@@ -7,7 +7,8 @@ import { ChannelArg, IndexArg, InputArg, NoteArg, NoteId } from './types'
 
 // Those properties will never change, only their content, so it's save to
 // destructure.
-const { ccValues, aftValues, playingNotes, noteOnEvents, ccEvents, aftEvents } = state
+const { ccValues, aftValues, playingNotes, noteOnEvents, ccEvents, aftEvents } =
+  state
 
 // Expose the `MidiAccess` instance because we need it in other files too.
 export const midiAccess = new MidiAccess()
