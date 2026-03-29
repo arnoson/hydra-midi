@@ -1,7 +1,7 @@
 import { chainable } from '../utils'
 import state from '../state'
 import { getMidiId, resolveInput } from '../midiAccess'
-import { scale, range, value } from '../transforms'
+import { scale, range, value, smooth } from '../transforms'
 import { ChannelArg, IndexArg, InputArg } from '../types'
 
 export const getCCId = (
@@ -39,5 +39,5 @@ export const cc = (
 ) => {
   const ccId = getCCId(index, channel, input)
   const fn = () => state.ccValues.get(ccId) ?? 0
-  return chainable(fn, { scale, range, value })
+  return chainable(fn, { scale, range, value, smooth })
 }
