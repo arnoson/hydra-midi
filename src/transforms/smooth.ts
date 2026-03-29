@@ -2,6 +2,7 @@ import { HydraContext } from '../types'
 import { chainable } from '../utils'
 import { range } from './range'
 import { value } from './value'
+import { scale } from './scale'
 
 type SmoothTransform = (fn: Function) => (factor: number) => any
 
@@ -28,6 +29,6 @@ export const smooth: SmoothTransform = (fn: Function) => (factor = 0.01) => {
       current += (target - current) * factor
       return current
     },
-    { range, value }
+    { range, value, scale }
   )
 }

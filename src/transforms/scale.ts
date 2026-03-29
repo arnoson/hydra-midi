@@ -2,6 +2,7 @@ import { HydraContext } from '../types'
 import { chainable } from '../utils'
 import { range } from './range'
 import { value } from './value'
+import { smooth } from './smooth'
 
 type ScaleTransform = (fn: Function) => (factor: number) => any
 
@@ -10,4 +11,4 @@ type ScaleTransform = (fn: Function) => (factor: number) => any
  * chain.
  */
 export const scale: ScaleTransform = (fn: Function) => (factor: number) =>
-  chainable((ctx: HydraContext) => fn(ctx) * factor, { range, value })
+  chainable((ctx: HydraContext) => fn(ctx) * factor, { range, value, smooth })
