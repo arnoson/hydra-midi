@@ -9,10 +9,7 @@ type SmoothTransform = (fn: Function) => (factor: number) => any
  * Generate a new transform that slews the previous value in the function
  * chain.
  *
- * factor should be between 0 and 1:
- * - 0   => no change
- * - 1   => jump immediately to target
- * - 0.1 => slow smoothing
+ * Factor should be between 0 and 1.
  */
 export const smooth: SmoothTransform = (fn: Function) => (factor = 0.01) => {
   let initialized = false
