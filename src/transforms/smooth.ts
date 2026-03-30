@@ -12,23 +12,25 @@ type SmoothTransform = (fn: Function) => (factor: number) => any
  *
  * Factor should be between 0 and 1.
  */
-export const smooth: SmoothTransform = (fn: Function) => (factor = 0.01) => {
-  let initialized = false
-  let current = 0
+export const smooth: SmoothTransform =
+  (fn: Function) =>
+  (factor = 0.01) => {
+    let initialized = false
+    let current = 0
 
-  return chainable(
-    (ctx: HydraContext) => {
-      const target = fn(ctx)
+    return chainable(
+      (ctx: HydraContext) => {
+        const target = fn(ctx)
 
-      if (!initialized) {
-        initialized = true
-        current = target
+        if (!initialized) {
+          initialized = true
+          current = target
+          return current
+        }
+
+        current += (target - current) * factor
         return current
-      }
-
-      current += (target - current) * factor
-      return current
-    },
-    { range, value, scale }
-  )
-}
+      },
+      { range, value, scale },
+    )
+  }
