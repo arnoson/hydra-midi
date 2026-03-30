@@ -29,7 +29,7 @@
     "prettier": "^3.6.2",
     "terser": "^5.43.1",
     "tsup": "^8.5.0",
-    "typescript": "^6.0.0",
+    "typescript": "^5.8.0",
     "untun": "^0.1.3"
   }
 }
