@@ -311,7 +311,7 @@ Contributions to the script and it's documentation are welcome :~) Please make s
 - use prettier to format your code (should happen automatically if you work on this project in VSCode)
 - use [conventional commits](https://www.conventionalcommits.or) (these are used to automatically generate release messages, including credits for your contributions)
 
-To test this script in development, run `pnpm dev`, which will
+To test this script in development, run `npm dev`, which will
 - compile (and watch) `/src/index.ts`
 - start a local server in `/dist` 
 - tunnel it with [untun](https://github.com/unjs/untun)
