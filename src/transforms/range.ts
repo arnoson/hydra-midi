@@ -2,6 +2,7 @@ import { HydraContext } from '../types'
 import { chainable, map } from '../utils'
 import { scale } from './scale'
 import { value } from './value'
+import { smooth } from './smooth'
 
 type RangeTransform = (fn: Function) => (min?: number, max?: number) => any
 
@@ -15,4 +16,5 @@ export const range: RangeTransform =
     chainable((ctx: HydraContext) => map(fn(ctx), 0, 1, min, max), {
       scale,
       value,
+      smooth,
     })
