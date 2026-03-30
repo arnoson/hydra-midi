@@ -2,6 +2,7 @@ name: Release
 
 permissions:
   contents: write
+  id-token: write
 
 on:
   push:
@@ -12,27 +13,23 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: lts/*
           registry-url: https://registry.npmjs.org/
 
-      - run: corepack enable
-
       - name: Install
-        run: pnpm i
+        run: npm ci
 
       - name: Build
-        run: pnpm run build
+        run: npm run build
 
       - name: Publish to npm
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
 
       - run: npx changelogithub
         env:

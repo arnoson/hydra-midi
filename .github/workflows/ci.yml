@@ -13,19 +13,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
-
-      - run: corepack enable
+          node-version: lts/*
 
       - name: Install
-        run: pnpm i
+        run: npm ci
 
       - name: Test types
-        run: pnpm test:types
+        run: npm run test:types
 
       - name: Check formating
-        run: pnpm format:check
+        run: npm run format:check
