@@ -1,11 +1,6 @@
 import { startTunnel } from 'untun'
-import open, { apps } from 'open'
 
-const browserFlagIndex = process.argv.indexOf('--browser')
-const browser =
-  browserFlagIndex !== -1 ? process.argv[browserFlagIndex + 1] : undefined
-
-const tunnel = await startTunnel({ port: 3001 })
+const tunnel = await startTunnel({ port: 3000 })
 const tunnelUrl = await tunnel.getURL()
 
 const code = `await loadScript('${tunnelUrl}/index.js')
