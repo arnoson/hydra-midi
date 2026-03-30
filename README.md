@@ -270,6 +270,19 @@ note(60)
   .value(v => Math.sin(v))
 ```
 
+#### smooth()
+
+Slew the value towards the target, smoothing out abrupt changes. Factor should
+be between 0 (no movement) and 1 (no smoothing). Defaults to `0.01`.
+
+```js
+// Without smooth(), sweeping a CC will produce jumpy steps.
+osc(cc(74)).out()
+
+// With smooth(), the value glides between steps for a fluid animation.
+osc(cc(74).smooth()).out()
+```
+
 ### Accessing midi values directly
 
 `note()` and `cc()` do not directly return the corresponding values. Instead they return a function. This is useful for usage as a parameter as the values are updated automatically:
