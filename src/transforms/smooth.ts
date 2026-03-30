@@ -4,15 +4,13 @@ import { range } from './range'
 import { value } from './value'
 import { scale } from './scale'
 
-type SmoothTransform = (fn: Function) => (factor: number) => any
-
 /**
  * Generate a new transform that slews the previous value in the function
  * chain.
  *
  * Factor should be between 0 and 1.
  */
-export const smooth: SmoothTransform =
+export const smooth =
   (fn: Function) =>
   (factor = 0.01) => {
     let initialized = false
