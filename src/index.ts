@@ -8,6 +8,8 @@ import {
   _noteVelocity,
   aft,
   _aft,
+  bend,
+  _bend,
 } from './hydra-api'
 import state from './state'
 exposeToWindow({
@@ -19,5 +21,7 @@ exposeToWindow({
   _noteVelocity,
   aft,
   _aft,
+  bend,
+  _bend,
   midiState: state,
 })

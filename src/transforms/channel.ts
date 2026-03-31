@@ -4,6 +4,8 @@ import { note } from '../hydra-api/note'
 import { onNote } from '../hydra-api/onNote'
 import { aft } from '../hydra-api/aft'
 import { onAft } from '../hydra-api/onAft'
+import { bend } from '../hydra-api/bend'
+import { onBend } from '../hydra-api/onBend'
 import {
   CCEventContext,
   ChannelArg,
@@ -12,6 +14,7 @@ import {
   NoteArg,
   NoteEventContext,
   AftEventContext,
+  BendEventContext,
 } from '../types'
 
 /**
@@ -30,6 +33,9 @@ export const channel = (channel: ChannelArg, input?: InputArg) => ({
   aft: (_note?: NoteArg, _channel?: ChannelArg, _input?: InputArg) =>
     aft(_note, _channel ?? channel, _input ?? input),
 
+  bend: (_channel?: ChannelArg, _input?: InputArg) =>
+    bend(_channel ?? channel, _input ?? input),
+
   onNote: (_note: NoteArg, _event: (context: NoteEventContext) => void) =>
     onNote(_note, channel, input ?? '*', _event),
 
@@ -38,4 +44,7 @@ export const channel = (channel: ChannelArg, input?: InputArg) => ({
 
   onAft: (_note: NoteArg, _event: (context: AftEventContext) => void) =>
     onAft(_note, channel, input ?? '*', _event),
+
+  onBend: (_event: (context: BendEventContext) => void) =>
+    onBend(channel, input ?? '*', _event),
 })

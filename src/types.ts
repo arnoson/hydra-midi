@@ -9,6 +9,7 @@ export type IndexArg = number | '*'
 
 export type NoteId = `${NoteArg}/${ChannelArg}/${InputArg}`
 export type CCId = `${IndexArg}/${ChannelArg}/${InputArg}`
+export type BendId = `${ChannelArg}/${InputArg}`
 
 export interface HydraContext {
   time: number
@@ -38,6 +39,11 @@ export interface CCEventContext {
 
 export interface AftEventContext {
   note: number
+  value: number
+  channel: number
+}
+
+export interface BendEventContext {
   value: number
   channel: number
 }
