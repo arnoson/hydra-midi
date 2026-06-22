@@ -4,6 +4,7 @@ import type {
   NoteEventContext,
   CCEventContext,
   AftEventContext,
+  BendEventContext,
 } from './types'
 
 const ccValues: CCValues = new Map(
@@ -12,6 +13,10 @@ const ccValues: CCValues = new Map(
 
 const aftValues: CCValues = new Map(
   JSON.parse(sessionStorage.getItem('hydra-midi_aftValues') || '[]'),
+)
+
+const bendValues: CCValues = new Map(
+  JSON.parse(sessionStorage.getItem('hydra-midi_bendValues') || '[]'),
 )
 
 // Monkey-patch `ccValues.set` to make a kind of proxy.
@@ -30,9 +35,18 @@ aftValues.set = function (key: string, value: number) {
   return result
 }
 
+// Monkey-patch `bendValues.set` to make a kind of proxy.
+const { set: setBend } = bendValues
+bendValues.set = function (key: string, value: number) {
+  const result = setBend.apply(this, [key, value])
+  sessionStorage.setItem('hydra-midi_bendValues', JSON.stringify([...bendValues]))
+  return result
+}
+
 export default {
   ccValues,
   aftValues,
+  bendValues,
 
   playingNotes: new Map<string, number>(),
 
@@ -41,6 +55,8 @@ export default {
   ccEvents: new Map<string, (context: CCEventContext) => void>(),
 
   aftEvents: new Map<string, (context: AftEventContext) => void>(),
+
+  bendEvents: new Map<string, (context: BendEventContext) => void>(),
 
   defaults: {
     channel: '*',

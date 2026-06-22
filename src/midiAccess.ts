@@ -7,7 +7,7 @@ import { ChannelArg, IndexArg, InputArg, NoteArg, NoteId } from './types'
 
 // Those properties will never change, only their content, so it's save to
 // destructure.
-const { ccValues, aftValues, playingNotes, noteOnEvents, ccEvents, aftEvents } =
+const { ccValues, aftValues, bendValues, playingNotes, noteOnEvents, ccEvents, aftEvents, bendEvents } =
   state
 
 // Expose the `MidiAccess` instance because we need it in other files too.
@@ -110,6 +110,14 @@ midiAccess.on(MidiAccess.TypeNoteOff, ({ data, channel, input }) => {
 midiAccess.on(MidiAccess.TypePitchBend, ({ input, data, channel }) => {
   const value = ((data[1] << 7) + data[0] - 8192) / 8192
   const displayValue = +value.toFixed(2)
+  const normalizedValue = (value + 1) / 2 // Normalize to 0-1 range
+  const bendId = getMidiId('*', channel, input.id)
+  bendValues.set(bendId, normalizedValue /* TODO: keep the -1 to 1 range */)
+  bendEvents.get(bendId)?.({ value, channel })
+  getMidiWildcards(-1, channel, input.id).forEach(wildcard => {
+    bendValues.set(wildcard, normalizedValue)
+    bendEvents.get(wildcard)?.({ value, channel })
+  })
   logMidiMessage({ input, type: 'bend', channel, data: [displayValue] })
 })
 
